@@ -1,3 +1,4 @@
+// ฟังก์ชันสลับหน้าเมนูหลัก
 function switchPage(pageId, clickedElement) {
     const allPages = document.querySelectorAll('.page-section');
     allPages.forEach(page => {
@@ -18,10 +19,6 @@ function switchPage(pageId, clickedElement) {
         clickedElement.classList.add('active');
     }
 
-    if(pageId === 'portfolio') {
-        closeProject();
-    }
-
     const whiteBox = document.querySelector('.white-box');
     if (whiteBox) {
         const yOffset = -20; 
@@ -30,38 +27,29 @@ function switchPage(pageId, clickedElement) {
     }
 }
 
-// อัปเดตฟังก์ชันรับพารามิเตอร์ 5 ตัว: ชื่อ, ตำแหน่ง, คำอธิบาย, ลิงก์รูปแบนเนอร์, รหัสยูทูป
-function openProject(title, subtitle, description, bannerImg, youtubeId) {
-    document.getElementById('portfolio-grid-view').style.display = 'none';
+// ฟังก์ชันเปิด Modal วิดีโอเมื่อคลิกที่รูป
+function openModal(youtubeId) {
+    const modal = document.getElementById('video-modal');
+    const iframe = document.getElementById('modal-iframe');
     
-    // ใส่ข้อมูลข้อความ
-    document.getElementById('detail-title').innerText = title;
-    document.getElementById('detail-subtitle').innerText = subtitle;
-    document.getElementById('detail-desc').innerText = description;
+    // ใส่ลิงก์ YouTube พร้อม ?autoplay=1 เพื่อให้วิดีโอเล่นอัตโนมัติ
+    iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?autoplay=1";
     
-    // จัดการรูปภาพแบนเนอร์ฝั่งขวา
-    const bannerElement = document.getElementById('detail-banner');
-    if (bannerImg && bannerImg !== '') {
-        bannerElement.src = bannerImg;
-        bannerElement.style.display = 'inline-block';
-    } else {
-        // ถ้าผลงานไหนไม่มีรูปโลโก้ ให้ซ่อนไว้ ข้อความฝั่งซ้ายจะขยายเต็มอัตโนมัติ
-        bannerElement.style.display = 'none';
-    }
-    
-    document.getElementById('detail-iframe').src = "https://www.youtube.com/embed/" + youtubeId + "?autoplay=1";
-    
-    document.getElementById('portfolio-detail-view').style.display = 'block';
-
-    const whiteBox = document.querySelector('.white-box');
-    if (whiteBox) {
-        const y = whiteBox.getBoundingClientRect().top + window.pageYOffset - 20;
-        window.scrollTo({top: y, behavior: 'smooth'});
-    }
+    // แสดง Modal แบบจัดให้อยู่กึ่งกลางหน้าจอ
+    modal.style.display = 'flex';
 }
 
-function closeProject() {
-    document.getElementById('detail-iframe').src = "";
-    document.getElementById('portfolio-detail-view').style.display = 'none';
-    document.getElementById('portfolio-grid-view').style.display = 'block';
+// ฟังก์ชันปิด Modal วิดีโอ (เมื่อคลิกกากบาท หรือคลิกพื้นหลังสีดำ)
+function closeModal(event) {
+    // ปิดเมื่อไม่ได้กดโดนกล่องวิดีโอ หรือกดโดนปุ่มกากบาท
+    if (!event || event.target.id === 'video-modal' || event.target.classList.contains('close-btn')) {
+        const modal = document.getElementById('video-modal');
+        const iframe = document.getElementById('modal-iframe');
+        
+        // ล้าง src ออก เพื่อให้ YouTube หยุดเล่นทันที
+        iframe.src = "";
+        
+        // ซ่อนกล่อง Modal
+        modal.style.display = 'none';
+    }
 }
