@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ratchaphon Thatprasert - 3D Animator Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="transparent-header">
+        <div class="header-container">
+            <img src="img/ufo-icon.png" class="side-icon" alt="UFO">
+            <div class="title-group">
+                <h1>Ratchaphon Thatprasert</h1>
+                <p>3D Animator</p>
+            </div>
+            <img src="img/planet-icon.png" class="side-icon" alt="Planet">
+        </div>
+    </header>
+
+    <div class="white-box">
+        
+        <nav class="menu">
+            <a href="#" class="nav-btn active" onclick="switchPage('reels', this)">Reels</a>
+            <a href="#" class="nav-btn" onclick="switchPage('portfolio', this)">Portfolio</a>
+            <a href="resume.pdf" target="_blank" class="nav-btn">Resume</a>
+            <a href="#" class="nav-btn" onclick="switchPage('about', this)">About Me</a>
+        </nav>
+
+        <main class="content">
+            
+            <section id="reels" class="page-section active">
+                <div class="reels-grid single-reel">
+                    <div class="reel-item">
+                        <h2>3D Animation Reel</h2>
+                        <p class="sub-text">My latest animation works</p>
+                        <div class="video-placeholder">
+                            <p>ใส่ iframe วิดีโอ Reel หลักตรงนี้</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="portfolio" class="page-section">
+                
+                <div id="portfolio-grid-view">
+                    <h2>My Portfolio</h2>
+                    <div class="portfolio-grid">
+                        
+                        <div class="port-item" onclick="openProject(
+                            'The Mojo Show', 
+                            'Animator and 3D Artist', 
+                            'I contributed animation and 3D art to online animated childrens show The Mojo Show, by ClassDojo. I animated various episodes and modelled props and bedrooms.', 
+                            'img/mojo-banner.png', 
+                            'dQw4w9WgXcQ'
+                        )">
+                            <img src="img/thumb1.jpg" alt="Portfolio 1" class="port-thumb">
+                            <div class="play-overlay">▶</div>
+                        </div>
+
+                        <div class="port-item" onclick="openProject(
+                            'Short Film Project', 
+                            'Lead Animator', 
+                            'รับผิดชอบในส่วนของการ Animate ตัวละครหลักทั้งหมด และทำ Facial Expression', 
+                            '', 
+                            'ใส่รหัสวิดีโอYouTubeที่นี่'
+                        )">
+                            <img src="img/thumb2.jpg" alt="Portfolio 2" class="port-thumb">
+                            <div class="play-overlay">▶</div>
+                        </div>
+
+                        <div class="port-item" onclick="openProject(
+                            'Character Walk Cycle', 
+                            'Personal Project', 
+                            'ฝึกการเดินของตัวละคร 3D โดยเน้นที่น้ำหนักและ Body Mechanics', 
+                            '', 
+                            'ใส่รหัสวิดีโอYouTubeที่นี่'
+                        )">
+                            <img src="img/thumb3.jpg" alt="Portfolio 3" class="port-thumb">
+                            <div class="play-overlay">▶</div>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div id="portfolio-detail-view" style="display: none;">
+                    <button class="back-btn" onclick="closeProject()">← Back to Portfolio</button>
+                    
+                    <div class="detail-header">
+                        <div class="detail-text-col">
+                            <h2 id="detail-title">ชื่อผลงาน</h2>
+                            <p id="detail-subtitle" class="detail-subtitle">ตำแหน่ง / บทบาท</p>
+                            <p id="detail-desc" class="detail-description">คำอธิบายผลงาน</p>
+                        </div>
+                        <div class="detail-img-col">
+                            <img id="detail-banner" src="" alt="Project Banner">
+                        </div>
+                    </div>
+
+                    <div class="video-placeholder detail-video">
+                        <iframe id="detail-iframe" src="" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+            </section>
+
+            <section id="about" class="page-section">
+                <div class="about-container">
+                    <div class="profile-pic-container">
+                        <img src="img/profile.jpg" alt="Ratchaphon Thatprasert" class="profile-pic">
+                    </div>
+                    
+                    <div class="about-text">
+                        <h2>รัชพล ทัศประเสริฐ</h2>
+                        <p>ผมหลงใหลในโลกของ 3D Animation มาตั้งแต่เด็ก ยังรู้สึกสนุกทุกครั้งที่ได้ขยับตัวละครให้มีชีวิตและเป็นธรรมชาติคือความท้าทายที่ผมสนุกกับมันเสมอ ผมสนุกกับการเรียนรู้เทคนิคใหม่ๆ และพร้อมเปิดรับประสบการณ์ในสภาพแวดล้อมการทำงานจริง เพื่อพัฒนาฝีมือให้มีความมืออาชีพมากขึ้น</p>
+                        <br>
+                        <p>นอกจากโปรเจกต์ในมหาวิทยาลัย ผมยังสร้างคอนเทนต์แอนิเมชันผ่านช่อง <strong>Hypurr</strong> ทั้งบน TikTok และ YouTube</p>
+                        <br>
+                        <p>Contact me at <strong>hypurr.con@gmail.com</strong></p>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <a href="resume.pdf" target="_blank" class="btn btn-green">Resume</a>
+                    <a href="#" target="_blank" class="btn btn-green">YouTube</a>
+                    <a href="#" target="_blank" class="btn btn-green">TikTok</a>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
