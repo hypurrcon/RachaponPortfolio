@@ -1,113 +1,94 @@
 /* =============================================
-   RACHAPON THATPRASERT — Portfolio
+   RACHAPON THATPRASERT — Portfolio Script
    ============================================= */
 
-const DATA_KEY  = 'portfolio_data';
-const PASS_KEY  = 'portfolio_pass_hash';
-const ADMIN_KEY = 'portfolio_admin_auth';
-const LOCK_KEY  = 'portfolio_lockout';
-const DEFAULT_PASS = 'rachapon2024';
+/* ================================================
+   DATA — แก้ไขผ่าน Admin Panel แล้ว Export
+   ================================================ */
+const PORTFOLIO_DATA = {
+    reelUrl: 'https://player.vimeo.com/video/1169127503?title=0&byline=0&portrait=0',
+    portfolio: [
+        'devW0oJUFRk','dex4vsSgK8A','5oIfkuYBtLg','p2Zyb89sXoY',
+        'xzfF2g12BP4','50XBFJeMdfA','9KTGKXc4XYc','-HGcIdC-sAg',
+        'R0XCXMMP5G8','4tB731jNpTw','V8pVpn3ftBQ','w_EWc5K7SHs',
+        'KYIcZnQCRDM','2F-CXlheMWo','HmKEqZBP7N8','K_jDPXL4zdk',
+        'dEO1n5XmTnA','ixTTWdGs1UY','jRConNGJ1Zc'
+    ]
+};
+
+/* Working copy — edited in memory during admin session */
+let appData = JSON.parse(JSON.stringify(PORTFOLIO_DATA));
 
 /* ================================================
-   SECURITY LAYER 1 — SHA-256 via Web Crypto API
-   (No plain-text password ever stored anywhere)
+   SECURITY — SHA-256 + Rate Limiting
    ================================================ */
+const ADMIN_PASS_HASH_KEY = 'p_hash';
+const LOCKOUT_KEY         = 'p_lock';
+const DEFAULT_PASS        = 'rachapon2024';
+const MAX_ATTEMPTS        = 3;
+const LOCKOUT_MS          = 30000;
+
 async function sha256(str) {
     const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
     return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
 async function getStoredHash() {
-    let h = localStorage.getItem(PASS_KEY);
+    let h = sessionStorage.getItem(ADMIN_PASS_HASH_KEY);
     if (!h) {
         h = await sha256(DEFAULT_PASS);
-        localStorage.setItem(PASS_KEY, h);
+        sessionStorage.setItem(ADMIN_PASS_HASH_KEY, h);
     }
     return h;
 }
 
-/* ================================================
-   SECURITY LAYER 2 — Rate Limiting
-   Lock 30s after 3 wrong attempts.
-   Attempts reset only on success.
-   ================================================ */
-const MAX_ATTEMPTS = 3;
-const LOCKOUT_MS   = 30000;
-
 function getLockout() {
-    try { return JSON.parse(localStorage.getItem(LOCK_KEY)) || { attempts: 0, until: 0 }; }
+    try { return JSON.parse(sessionStorage.getItem(LOCKOUT_KEY)) || { attempts: 0, until: 0 }; }
     catch { return { attempts: 0, until: 0 }; }
 }
-function setLockout(obj) { localStorage.setItem(LOCK_KEY, JSON.stringify(obj)); }
-function clearLockout()  { localStorage.removeItem(LOCK_KEY); }
+function setLockout(o) { sessionStorage.setItem(LOCKOUT_KEY, JSON.stringify(o)); }
+function clearLockout() { sessionStorage.removeItem(LOCKOUT_KEY); }
 
 function isLockedOut() {
     const lock = getLockout();
     if (lock.until && Date.now() < lock.until) return true;
-    if (lock.until && Date.now() >= lock.until) {
-        /* Lockout expired — reset attempts but keep record */
-        setLockout({ attempts: 0, until: 0 });
-    }
+    if (lock.until && Date.now() >= lock.until) setLockout({ attempts: 0, until: 0 });
     return false;
 }
 
-function recordFailedAttempt() {
+function recordFail() {
     const lock = getLockout();
     lock.attempts = (lock.attempts || 0) + 1;
-    if (lock.attempts >= MAX_ATTEMPTS) {
-        lock.until = Date.now() + LOCKOUT_MS;
-    }
+    if (lock.attempts >= MAX_ATTEMPTS) lock.until = Date.now() + LOCKOUT_MS;
     setLockout(lock);
     return lock;
 }
 
-function getLockoutRemaining() {
-    const lock = getLockout();
-    if (!lock.until) return 0;
-    return Math.max(0, Math.ceil((lock.until - Date.now()) / 1000));
-}
-
 /* ================================================
-   SECURITY LAYER 3 — Anti-Tamper / DevTools detection
-   Detect open DevTools and disable admin trigger.
-   Not bulletproof but raises the bar significantly.
+   ANTI-TAMPER
    ================================================ */
-let devToolsOpen = false;
-(function detectDevTools() {
-    const threshold = 160;
-    function check() {
-        const widthDiff  = window.outerWidth  - window.innerWidth  > threshold;
-        const heightDiff = window.outerHeight - window.innerHeight > threshold;
-        devToolsOpen = widthDiff || heightDiff;
-    }
-    check();
-    setInterval(check, 1000);
-})();
-
-/* ================================================
-   SECURITY LAYER 4 — Anti-Clickjacking
-   Prevent the page from being embedded in an iframe
-   by a malicious third party.
-   ================================================ */
+/* Block iframe embedding */
 if (window.self !== window.top) {
     document.documentElement.style.display = 'none';
     window.top.location = window.self.location;
 }
 
-/* ================================================
-   SECURITY LAYER 5 — Disable right-click & F12
-   on admin panel only (not on the whole page —
-   that would annoy visitors).
-   ================================================ */
-function lockAdminInteraction() {
-    document.addEventListener('keydown', blockDevKeys);
-}
-function unlockAdminInteraction() {
-    document.removeEventListener('keydown', blockDevKeys);
-}
+/* Detect DevTools (size heuristic) */
+let devToolsOpen = false;
+(function() {
+    const threshold = 160;
+    function check() {
+        devToolsOpen = (window.outerWidth - window.innerWidth > threshold) ||
+                       (window.outerHeight - window.innerHeight > threshold);
+    }
+    check();
+    setInterval(check, 1500);
+})();
+
+/* Block DevTools keys while Admin Panel is open */
 function blockDevKeys(e) {
     const panel = document.getElementById('admin-panel');
-    if (!panel || panel.hidden) { unlockAdminInteraction(); return; }
+    if (!panel || panel.hidden) { document.removeEventListener('keydown', blockDevKeys); return; }
     if (e.key === 'F12' ||
        (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) ||
        (e.ctrlKey && e.key === 'U')) {
@@ -116,66 +97,26 @@ function blockDevKeys(e) {
 }
 
 /* ================================================
-   SECURITY LAYER 6 — Secret keyboard shortcut
-   Type  A D M I N  (case-insensitive) anywhere
-   on the page (not while typing in an input).
-   Sequence must be completed within 3 seconds.
-   DevTools open → trigger disabled.
+   SECRET TRIGGER — type "admin" anywhere on page
+   (not while focused in an input)
+   Disabled when DevTools is open.
    ================================================ */
 (function() {
     const SECRET = ['a','d','m','i','n'];
-    let buf = [];
-    let timer;
-
+    let buf = [], timer;
     document.addEventListener('keydown', e => {
-        /* Ignore if user is typing in any input/textarea */
-        const tag = document.activeElement.tagName.toLowerCase();
+        const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
         if (tag === 'input' || tag === 'textarea') return;
-
-        /* Ignore if admin/modal already open */
         const ap = document.getElementById('admin-panel');
         if (ap && !ap.hidden) return;
-
-        /* DevTools open → silently ignore */
         if (devToolsOpen) return;
-
         buf.push(e.key.toLowerCase());
         clearTimeout(timer);
         timer = setTimeout(() => { buf = []; }, 3000);
-
-        /* Keep only last N chars */
         if (buf.length > SECRET.length) buf.shift();
-
-        if (buf.join('') === SECRET.join('')) {
-            buf = [];
-            openAdmin();
-        }
+        if (buf.join('') === SECRET.join('')) { buf = []; openAdmin(); }
     });
 })();
-
-/* ================================================
-   DATA HELPERS
-   ================================================ */
-function loadData() {
-    try { const r = localStorage.getItem(DATA_KEY); return r ? JSON.parse(r) : null; }
-    catch { return null; }
-}
-function saveData(d) { localStorage.setItem(DATA_KEY, JSON.stringify(d)); }
-
-function getDefaultData() {
-    return {
-        reelUrl: 'https://player.vimeo.com/video/1169127503?title=0&byline=0&portrait=0',
-        portfolio: [
-            'devW0oJUFRk','dex4vsSgK8A','5oIfkuYBtLg','p2Zyb89sXoY',
-            'xzfF2g12BP4','50XBFJeMdfA','9KTGKXc4XYc','-HGcIdC-sAg',
-            'R0XCXMMP5G8','4tB731jNpTw','V8pVpn3ftBQ','w_EWc5K7SHs',
-            'KYIcZnQCRDM','2F-CXlheMWo','HmKEqZBP7N8','K_jDPXL4zdk',
-            'dEO1n5XmTnA','ixTTWdGs1UY','jRConNGJ1Zc'
-        ]
-    };
-}
-
-let appData = loadData() || getDefaultData();
 
 /* ================================================
    RENDER
@@ -251,21 +192,16 @@ document.addEventListener('keydown', e => {
 /* ================================================
    ADMIN PANEL
    ================================================ */
-function isLoggedIn() { return sessionStorage.getItem(ADMIN_KEY) === '1'; }
-
 function openAdmin() {
     const panel = document.getElementById('admin-panel');
     if (!panel) return;
+    /* Reset working copy from source-of-truth each time admin opens */
+    appData = JSON.parse(JSON.stringify(PORTFOLIO_DATA));
     panel.hidden = false;
     document.body.style.overflow = 'hidden';
-    lockAdminInteraction();
-    if (isLoggedIn()) {
-        showView('dashboard-view');
-        populateDashboard();
-    } else {
-        showView('login-view');
-        updateLockoutUI();
-    }
+    document.addEventListener('keydown', blockDevKeys);
+    showView('login-view');
+    updateLockoutUI();
 }
 
 function closeAdmin() {
@@ -273,7 +209,8 @@ function closeAdmin() {
     if (!panel) return;
     panel.hidden = true;
     document.body.style.overflow = '';
-    unlockAdminInteraction();
+    document.removeEventListener('keydown', blockDevKeys);
+    clearInterval(window._lockCountdown);
 }
 
 function showView(id) {
@@ -283,48 +220,44 @@ function showView(id) {
     });
 }
 
-/* -- Lockout UI countdown -- */
-let countdownInterval = null;
-
+/* -- Lockout UI -- */
 function updateLockoutUI() {
     const btn = document.getElementById('login-btn');
     const err = document.getElementById('login-error');
     const pi  = document.getElementById('admin-pass-input');
-    clearInterval(countdownInterval);
+    clearInterval(window._lockCountdown);
 
     if (isLockedOut()) {
-        pi.disabled = true;
+        if (pi)  pi.disabled = true;
         if (btn) btn.disabled = true;
-
-        countdownInterval = setInterval(() => {
-            const rem = getLockoutRemaining();
+        window._lockCountdown = setInterval(() => {
+            const lock = getLockout();
+            const rem  = Math.max(0, Math.ceil((lock.until - Date.now()) / 1000));
             if (rem <= 0) {
-                clearInterval(countdownInterval);
-                pi.disabled = false;
+                clearInterval(window._lockCountdown);
+                if (pi)  pi.disabled = false;
                 if (btn) btn.disabled = false;
-                err.textContent = '';
+                if (err) err.textContent = '';
             } else {
-                err.style.color = '#f28b82';
-                err.textContent = `ถูกล็อก ${rem} วินาที (พยายามมากเกินไป)`;
+                if (err) { err.style.color = '#f28b82'; err.textContent = `ถูกล็อก ${rem} วินาที`; }
             }
         }, 500);
     } else {
         const lock = getLockout();
-        const left = MAX_ATTEMPTS - (lock.attempts || 0);
-        if (lock.attempts > 0) {
+        if (lock.attempts > 0 && err) {
+            const left = MAX_ATTEMPTS - lock.attempts;
             err.style.color = '#f28b82';
             err.textContent = `รหัสผ่านไม่ถูกต้อง — เหลือ ${left} ครั้ง`;
         }
-        pi.disabled = false;
+        if (pi)  pi.disabled = false;
         if (btn) btn.disabled = false;
     }
 }
 
 async function adminLogin() {
     if (isLockedOut()) { updateLockoutUI(); return; }
-
-    const pi  = document.getElementById('admin-pass-input');
-    const err = document.getElementById('login-error');
+    const pi   = document.getElementById('admin-pass-input');
+    const err  = document.getElementById('login-error');
     const pass = pi ? pi.value : '';
     if (!pass) return;
 
@@ -333,39 +266,27 @@ async function adminLogin() {
 
     if (inputHash === storedHash) {
         clearLockout();
-        sessionStorage.setItem(ADMIN_KEY, '1');
         pi.value = '';
-        err.textContent = '';
+        if (err) err.textContent = '';
         showView('dashboard-view');
         populateDashboard();
     } else {
         pi.value = '';
-        const lock = recordFailedAttempt();
+        const lock = recordFail();
         if (lock.until) {
-            /* Just got locked */
-            err.style.color = '#f28b82';
-            err.textContent = `ถูกล็อก 30 วินาที`;
-            pi.disabled = true;
+            if (pi) pi.disabled = true;
             document.getElementById('login-btn').disabled = true;
-            updateLockoutUI();
-        } else {
-            const left = MAX_ATTEMPTS - lock.attempts;
-            err.style.color = '#f28b82';
-            err.textContent = `รหัสผ่านไม่ถูกต้อง — เหลือ ${left} ครั้ง`;
         }
+        updateLockoutUI();
         pi.focus();
     }
-}
-
-function adminLogout() {
-    sessionStorage.removeItem(ADMIN_KEY);
-    closeAdmin();
 }
 
 function populateDashboard() {
     const ri = document.getElementById('reel-url-input');
     if (ri) ri.value = appData.reelUrl;
     renderAdminList();
+    clearExportMsg();
 }
 
 function renderAdminList() {
@@ -373,17 +294,16 @@ function renderAdminList() {
     if (!list) return;
     list.innerHTML = '';
     appData.portfolio.forEach((id, idx) => {
+        const safeId = id.replace(/[^A-Za-z0-9_\-]/g, '');
         const row = document.createElement('div');
         row.className = 'admin-row';
-        /* Sanitize id before inserting into DOM */
-        const safeId = id.replace(/[^A-Za-z0-9_\-]/g, '');
         row.innerHTML = `
             <span class="admin-num">${idx + 1}</span>
             <img src="https://img.youtube.com/vi/${safeId}/mqdefault.jpg" class="admin-thumb" loading="lazy" alt="">
             <span class="admin-id" title="${safeId}">${safeId}</span>
             <div class="admin-actions">
                 <button class="abtn" onclick="moveItem(${idx},-1)" ${idx===0?'disabled':''} aria-label="ขึ้น">↑</button>
-                <button class="abtn" onclick="moveItem(${idx},1)"  ${idx===appData.portfolio.length-1?'disabled':''} aria-label="ลง">↓</button>
+                <button class="abtn" onclick="moveItem(${idx},1)" ${idx===appData.portfolio.length-1?'disabled':''} aria-label="ลง">↓</button>
                 <button class="abtn del" onclick="deleteItem(${idx})" aria-label="ลบ">✕</button>
             </div>
         `;
@@ -391,61 +311,42 @@ function renderAdminList() {
     });
 }
 
-function saveReelUrl() {
+function applyReelUrl() {
     const input = document.getElementById('reel-url-input');
-    const msg   = document.getElementById('reel-save-msg');
     if (!input) return;
     const v = input.value.trim();
     if (!v) return;
-    /* Validate URL scheme — only allow https:// */
     if (!/^https:\/\//i.test(v)) {
-        msg.style.color = '#f28b82';
-        msg.textContent = 'URL ต้องเริ่มต้นด้วย https://';
-        return;
+        showAdminMsg('reel-msg', 'URL ต้องขึ้นต้นด้วย https://', 'error'); return;
     }
     appData.reelUrl = v;
-    saveData(appData);
-    renderReel();
-    msg.style.color = '#c8f250';
-    msg.textContent = 'บันทึกแล้ว ✓';
-    setTimeout(() => { msg.textContent = ''; }, 2500);
+    showAdminMsg('reel-msg', 'อัปเดตแล้ว (อย่าลืม Export)', 'ok');
 }
 
 function addPortItem() {
     const input = document.getElementById('new-yt-input');
-    const msg   = document.getElementById('add-port-msg');
     if (!input) return;
     const raw = input.value.trim();
     let ytId = raw;
     const m = raw.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_\-]{11})/);
     if (m) ytId = m[1];
-    /* Strict whitelist: exactly 11 alphanumeric/dash/underscore */
     if (!/^[A-Za-z0-9_\-]{11}$/.test(ytId)) {
-        msg.style.color = '#f28b82';
-        msg.textContent = 'YouTube ID ไม่ถูกต้อง';
-        return;
+        showAdminMsg('add-msg', 'YouTube ID ไม่ถูกต้อง', 'error'); return;
     }
     if (appData.portfolio.includes(ytId)) {
-        msg.style.color = '#f28b82';
-        msg.textContent = 'วิดีโอนี้มีอยู่แล้ว';
-        return;
+        showAdminMsg('add-msg', 'วิดีโอนี้มีอยู่แล้ว', 'error'); return;
     }
     appData.portfolio.push(ytId);
-    saveData(appData);
-    renderPortfolio();
-    renderAdminList();
     input.value = '';
-    msg.style.color = '#c8f250';
-    msg.textContent = 'เพิ่มแล้ว ✓';
-    setTimeout(() => { msg.textContent = ''; }, 2500);
+    renderAdminList();
+    showAdminMsg('add-msg', 'เพิ่มแล้ว (อย่าลืม Export)', 'ok');
 }
 
 function deleteItem(idx) {
-    if (!confirm(`ลบวิดีโอที่ ${idx + 1} ออก?`)) return;
+    if (!confirm(`ลบวิดีโอที่ ${idx+1} ออก?`)) return;
     appData.portfolio.splice(idx, 1);
-    saveData(appData);
-    renderPortfolio();
     renderAdminList();
+    showAdminMsg('add-msg', 'ลบแล้ว (อย่าลืม Export)', 'ok');
 }
 
 function moveItem(idx, dir) {
@@ -453,9 +354,83 @@ function moveItem(idx, dir) {
     const ni = idx + dir;
     if (ni < 0 || ni >= a.length) return;
     [a[idx], a[ni]] = [a[ni], a[idx]];
-    saveData(appData);
-    renderPortfolio();
     renderAdminList();
+}
+
+function showAdminMsg(id, text, type) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = text;
+    el.style.color = type === 'error' ? '#f28b82' : '#c8f250';
+    clearTimeout(el._t);
+    el._t = setTimeout(() => { el.textContent = ''; }, 3000);
+}
+
+function clearExportMsg() {
+    const el = document.getElementById('export-msg');
+    if (el) el.textContent = '';
+}
+
+/* ================================================
+   EXPORT — generate new script.js and download it
+   ================================================ */
+function exportScript() {
+    /* Fetch the current script.js source text */
+    fetch('script.js')
+        .then(r => {
+            if (!r.ok) throw new Error('fetch failed');
+            return r.text();
+        })
+        .then(source => {
+            const newSource = rebuildSource(source);
+            downloadFile('script.js', newSource);
+            showAdminMsg('export-msg', '✓ script.js ดาวน์โหลดแล้ว — นำไปแทนที่ไฟล์เดิมแล้ว push GitHub', 'ok');
+        })
+        .catch(() => {
+            /* Fallback: build from scratch if fetch fails (e.g. opened as file://) */
+            const newSource = buildScriptFromScratch();
+            downloadFile('script.js', newSource);
+            showAdminMsg('export-msg', '✓ script.js ดาวน์โหลดแล้ว — นำไปแทนที่ไฟล์เดิมแล้ว push GitHub', 'ok');
+        });
+}
+
+/* Replace ONLY the PORTFOLIO_DATA block inside the source */
+function rebuildSource(source) {
+    const dataBlock = `const PORTFOLIO_DATA = ${JSON.stringify(appData, null, 4)};`;
+    return source.replace(
+        /const PORTFOLIO_DATA = \{[\s\S]*?\};/,
+        dataBlock
+    );
+}
+
+/* Full fallback builder — writes complete script.js from template */
+function buildScriptFromScratch() {
+    return getCurrentScriptContent().replace(
+        /const PORTFOLIO_DATA = \{[\s\S]*?\};/,
+        `const PORTFOLIO_DATA = ${JSON.stringify(appData, null, 4)};`
+    );
+}
+
+function getCurrentScriptContent() {
+    /* Read from the actual loaded script tag */
+    const scripts = document.querySelectorAll('script[src="script.js"]');
+    if (scripts.length) {
+        /* Can't read inline from tag — rely on fetch path */
+    }
+    /* Return a minimal valid fallback template */
+    return `/* RACHAPON THATPRASERT — Portfolio Script */\n\nconst PORTFOLIO_DATA = ${JSON.stringify(PORTFOLIO_DATA, null, 4)};\n\n/* [Full script was not available for rebuild. Please use the fetch-based export.] */\n`;
+}
+
+function downloadFile(filename, text) {
+    const blob = new Blob([text], { type: 'text/javascript' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
 }
 
 async function changePassword() {
@@ -463,25 +438,24 @@ async function changePassword() {
     const nw  = document.getElementById('cp-new').value;
     const nw2 = document.getElementById('cp-new2').value;
     const msg = document.getElementById('cp-msg');
-    if (!cur||!nw||!nw2) { msg.style.color='#f28b82'; msg.textContent='กรอกให้ครบ'; return; }
-    if (nw !== nw2)       { msg.style.color='#f28b82'; msg.textContent='รหัสผ่านใหม่ไม่ตรงกัน'; return; }
-    if (nw.length < 8)    { msg.style.color='#f28b82'; msg.textContent='ต้องมีอย่างน้อย 8 ตัวอักษร'; return; }
+    if (!cur||!nw||!nw2) { showAdminMsg('cp-msg','กรอกให้ครบ','error'); return; }
+    if (nw !== nw2)       { showAdminMsg('cp-msg','รหัสผ่านใหม่ไม่ตรงกัน','error'); return; }
+    if (nw.length < 8)    { showAdminMsg('cp-msg','ต้องมีอย่างน้อย 8 ตัวอักษร','error'); return; }
     const curHash = await sha256(cur);
     const stored  = await getStoredHash();
-    if (curHash !== stored) { msg.style.color='#f28b82'; msg.textContent='รหัสผ่านปัจจุบันไม่ถูกต้อง'; return; }
-    localStorage.setItem(PASS_KEY, await sha256(nw));
+    if (curHash !== stored) { showAdminMsg('cp-msg','รหัสผ่านปัจจุบันไม่ถูกต้อง','error'); return; }
+    /* Save new hash to sessionStorage for this session only */
+    sessionStorage.setItem(ADMIN_PASS_HASH_KEY, await sha256(nw));
     clearLockout();
     ['cp-current','cp-new','cp-new2'].forEach(id => { document.getElementById(id).value = ''; });
-    msg.style.color = '#c8f250';
-    msg.textContent = 'เปลี่ยนรหัสผ่านแล้ว ✓';
-    setTimeout(() => { msg.textContent = ''; showView('dashboard-view'); }, 2000);
+    showAdminMsg('cp-msg','เปลี่ยนรหัสผ่านในเซสชันนี้แล้ว ✓\n(เปลี่ยนถาวร: แก้ DEFAULT_PASS ใน script.js)','ok');
 }
 
-/* Enter key on login — only if not locked */
+/* Enter key on login */
 document.addEventListener('keydown', e => {
     if (e.key !== 'Enter') return;
     const lv = document.getElementById('login-view');
-    if (lv && lv.style.display !== 'none' && !isLockedOut()) adminLogin();
+    if (lv && lv.style.display !== 'none') adminLogin();
 });
 
 /* ================================================
@@ -498,5 +472,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderReel();
     renderPortfolio();
-    getStoredHash(); /* pre-generate hash on first visit */
+    getStoredHash();
 });

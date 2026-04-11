@@ -106,9 +106,9 @@
                     <img src="img/profile.jpg" alt="Rachapon Thatprasert — 3D Animator" class="profile-img">
                 </div>
                 <div class="contact-block">
-                    <a href="/cdn-cgi/l/email-protection#f99180898c8b8bd79a9697b99e94989095d79a9694" class="contact-link" aria-label="Send email">
+                    <a href="mailto:hypurr.con@gmail.com" class="contact-link" aria-label="Send email">
                         <span class="contact-icon" aria-hidden="true">✉</span>
-                        <span class="__cf_email__" data-cfemail="4c24353c393e3e622f23220c2b212d2520622f2321">[email&#160;protected]</span>
+                        hypurr.con@gmail.com
                     </a>
                     <div class="social-row">
                         <a href="https://www.youtube.com/@Hypurr00" target="_blank" rel="noopener noreferrer" class="social-btn">YouTube</a>
@@ -162,20 +162,20 @@
     </div>
 </div>
 
-<!-- Admin Panel — open by clicking footer 5 times -->
+<!-- Admin Panel — type "admin" on keyboard to open -->
 <div id="admin-panel" class="admin-overlay" role="dialog" aria-modal="true" aria-label="Admin Panel" hidden>
     <div class="admin-backdrop" onclick="closeAdmin()"></div>
     <div class="admin-box">
 
         <div class="admin-header">
-            <span class="admin-logo">⚙ Admin Panel</span>
+            <span class="admin-logo">&#9881; Admin Panel</span>
             <button class="modal-close" onclick="closeAdmin()" aria-label="Close">&#x2715;</button>
         </div>
 
         <!-- LOGIN -->
         <div id="login-view">
             <p class="admin-section-title">เข้าสู่ระบบ</p>
-            <p class="admin-hint">รหัสผ่านเริ่มต้น: <code>rachapon2024</code> (เปลี่ยนได้หลัง login)</p>
+            <p class="admin-hint">รหัสผ่านเริ่มต้น: <code>rachapon2024</code></p>
             <div class="admin-field">
                 <label for="admin-pass-input">รหัสผ่าน</label>
                 <input type="password" id="admin-pass-input" placeholder="กรอกรหัสผ่าน" autocomplete="current-password">
@@ -188,9 +188,9 @@
         <div id="dashboard-view" style="display:none;">
 
             <div class="admin-tabs">
-                <button class="atab active" onclick="adminTab(this,'tab-reel')">🎬 Reel</button>
-                <button class="atab" onclick="adminTab(this,'tab-port')">🗂 Portfolio</button>
-                <button class="atab" onclick="adminTab(this,'tab-pass')">🔑 รหัสผ่าน</button>
+                <button class="atab active" onclick="adminTab(this,'tab-reel')">&#127916; Reel</button>
+                <button class="atab" onclick="adminTab(this,'tab-port')">&#128193; Portfolio</button>
+                <button class="atab" onclick="adminTab(this,'tab-pass')">&#128273; รหัสผ่าน</button>
             </div>
 
             <!-- Reel tab -->
@@ -202,31 +202,32 @@
                     <input type="text" id="reel-url-input" placeholder="https://player.vimeo.com/video/...">
                 </div>
                 <div class="admin-row-btn">
-                    <button class="admin-primary-btn" onclick="saveReelUrl()">บันทึก</button>
-                    <span id="reel-save-msg" class="admin-success"></span>
+                    <button class="admin-primary-btn" onclick="applyReelUrl()">อัปเดต</button>
+                    <span id="reel-msg" class="admin-success"></span>
                 </div>
             </div>
 
             <!-- Portfolio tab -->
             <div id="tab-port" class="admin-tab-content" style="display:none;">
                 <p class="admin-section-title">เพิ่มวิดีโอใหม่</p>
-                <p class="admin-hint">วาง YouTube URL หรือ Video ID (11 ตัวอักษร) เช่น dQw4w9WgXcQ</p>
+                <p class="admin-hint">วาง YouTube URL หรือ Video ID (11 ตัวอักษร)</p>
                 <div class="admin-field">
                     <label for="new-yt-input">YouTube URL หรือ ID</label>
                     <input type="text" id="new-yt-input" placeholder="https://youtube.com/watch?v=XXXXXXXXXXX">
                 </div>
                 <div class="admin-row-btn">
                     <button class="admin-primary-btn" onclick="addPortItem()">+ เพิ่ม</button>
-                    <span id="add-port-msg" class="admin-success"></span>
+                    <span id="add-msg" class="admin-success"></span>
                 </div>
                 <p class="admin-section-title" style="margin-top:28px;">รายการวิดีโอทั้งหมด</p>
-                <p class="admin-hint">↑↓ เพื่อเรียงลำดับ &nbsp;|&nbsp; ✕ เพื่อลบ</p>
+                <p class="admin-hint">&#8593;&#8595; เรียงลำดับ &nbsp;|&nbsp; &#x2715; ลบ</p>
                 <div id="admin-port-list" class="admin-port-list"></div>
             </div>
 
             <!-- Password tab -->
             <div id="tab-pass" class="admin-tab-content" style="display:none;">
-                <p class="admin-section-title">เปลี่ยนรหัสผ่าน</p>
+                <p class="admin-section-title">เปลี่ยนรหัสผ่าน (เซสชันนี้)</p>
+                <p class="admin-hint">เปลี่ยนถาวร: แก้ <code>DEFAULT_PASS</code> ใน script.js แล้ว Export</p>
                 <div class="admin-field">
                     <label for="cp-current">รหัสผ่านปัจจุบัน</label>
                     <input type="password" id="cp-current" autocomplete="current-password">
@@ -245,30 +246,32 @@
                 </div>
             </div>
 
+            <!-- Export zone -->
+            <div class="export-zone">
+                <p class="export-title">&#128229; Export &amp; Deploy</p>
+                <p class="admin-hint">เมื่อแก้ไขเสร็จ กด Export เพื่อดาวน์โหลด <code>script.js</code> ใหม่<br>นำไปแทนที่ไฟล์เดิมในโฟลเดอร์ แล้ว push ขึ้น GitHub — ทุกคนเห็นทันที &#10003;</p>
+                <button class="export-btn" onclick="exportScript()">&#128190; Export script.js</button>
+                <p id="export-msg" class="admin-success" style="margin-top:10px;font-size:0.8rem;line-height:1.5;"></p>
+            </div>
+
             <div class="admin-footer-row">
                 <button class="admin-logout-btn" onclick="adminLogout()">ออกจากระบบ</button>
             </div>
-        </div>
 
-    </div>
-</div>
+        </div><!-- end dashboard-view -->
 
-<script src="script.js"></script>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    </div><!-- end admin-box -->
+</div><!-- end admin-panel -->
 
 <script>
 function adminTab(el, tabId) {
-    // ลบสถานะ active ออกจากแท็บทั้งหมด
-    document.querySelectorAll('.atab').forEach(t => t.classList.remove('active'));
-    // ซ่อนเนื้อหาของแท็บทั้งหมด
-    document.querySelectorAll('.admin-tab-content').forEach(c => c.style.display = 'none');
-    
-    // ตั้งค่า active ให้แท็บที่กำลังคลิก
+    document.querySelectorAll('.atab').forEach(function(t) { t.classList.remove('active'); });
+    document.querySelectorAll('.admin-tab-content').forEach(function(t) { t.style.display = 'none'; });
     el.classList.add('active');
-    // แสดงเนื้อหาของแท็บนั้นๆ
-    document.getElementById(tabId).style.display = 'block';
+    var tab = document.getElementById(tabId);
+    if (tab) tab.style.display = 'block';
 }
 </script>
+<script src="script.js"></script>
 </body>
 </html>

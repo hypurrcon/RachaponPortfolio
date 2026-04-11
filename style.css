@@ -886,3 +886,35 @@ footer {
     transition: color var(--transition), border-color var(--transition);
 }
 .admin-logout-btn:hover { color: #f28b82; border-color: rgba(242,139,130,0.4); }
+
+/* Export Zone */
+.export-zone {
+    margin-top: 28px;
+    padding: 20px;
+    background: rgba(200,242,80,0.05);
+    border: 1px solid rgba(200,242,80,0.2);
+    border-radius: var(--radius);
+}
+.export-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: 0.05em;
+}
+.export-btn {
+    display: inline-block;
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-radius: 60px;
+    font-family: var(--ff-body);
+    font-weight: 700;
+    font-size: 0.9rem;
+    letter-spacing: 0.06em;
+    padding: 12px 32px;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: background var(--transition), transform var(--transition);
+}
+.export-btn:hover { background: #d6ff60; transform: scale(1.02); }
