@@ -1,47 +1,94 @@
+/* =============================================
+   RACHAPON THATPRASERT — Portfolio Script
+   ============================================= */
+
+// ---------- Year in footer ----------
+(function () {
+    const el = document.getElementById('year');
+    if (el) el.textContent = new Date().getFullYear();
+})();
+
+// ---------- Page switcher ----------
 function switchPage(pageId, clickedElement) {
-    const allPages = document.querySelectorAll('.page-section');
-    allPages.forEach(page => {
-        page.classList.remove('active');
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(p => {
+        p.classList.remove('active');
+        p.hidden = true;
     });
 
-    const selectedPage = document.getElementById(pageId);
-    if (selectedPage) {
-        selectedPage.classList.add('active');
+    // Show target
+    const target = document.getElementById(pageId);
+    if (target) {
+        target.classList.add('active');
+        target.hidden = false;
     }
 
-    const allNavBtns = document.querySelectorAll('.nav-btn');
-    allNavBtns.forEach(btn => {
+    // Update nav buttons
+    document.querySelectorAll('.nav-btn').forEach(btn => {
         btn.classList.remove('active');
+        btn.setAttribute('aria-selected', 'false');
     });
 
     if (clickedElement) {
         clickedElement.classList.add('active');
+        clickedElement.setAttribute('aria-selected', 'true');
     }
 
-    const whiteBox = document.querySelector('.white-box');
-    if (whiteBox) {
-        const yOffset = -20; 
-        const y = whiteBox.getBoundingClientRect().top + window.pageYOffset + yOffset;
-        window.scrollTo({top: y, behavior: 'smooth'});
+    // Smooth scroll to top of layout
+    const shell = document.querySelector('.layout-shell');
+    if (shell) {
+        const y = shell.getBoundingClientRect().top + window.pageYOffset - 16;
+        window.scrollTo({ top: y, behavior: 'smooth' });
     }
 }
 
-function openModal(youtubeId) {
+// ---------- Modal ----------
+function openModal(youtubeId, title) {
     const modal = document.getElementById('video-modal');
     const iframe = document.getElementById('modal-iframe');
-    
-    iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?autoplay=1";
-    
-    modal.style.display = 'flex';
+    const label  = document.getElementById('modal-title');
+
+    if (!modal || !iframe) return;
+
+    iframe.src = 'https://www.youtube.com/embed/' + youtubeId + '?autoplay=1&rel=0';
+    if (label) label.textContent = title || 'Now Playing';
+
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+
+    // Focus the close button for keyboard users
+    const closeBtn = modal.querySelector('.modal-close');
+    if (closeBtn) closeBtn.focus();
 }
 
-function closeModal(event) {
-    if (!event || event.target.id === 'video-modal' || event.target.classList.contains('close-btn')) {
-        const modal = document.getElementById('video-modal');
-        const iframe = document.getElementById('modal-iframe');
-        
-        iframe.src = "";
-        
-        modal.style.display = 'none';
-    }
+function closeModal() {
+    const modal  = document.getElementById('video-modal');
+    const iframe = document.getElementById('modal-iframe');
+
+    if (!modal) return;
+
+    iframe.src = '';
+    modal.hidden = true;
+    document.body.style.overflow = '';
 }
+
+// Close modal on Escape key
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        const modal = document.getElementById('video-modal');
+        if (modal && !modal.hidden) closeModal();
+    }
+});
+
+// ---------- Keyboard nav on portfolio items ----------
+document.addEventListener('DOMContentLoaded', function () {
+    // Ensure only first page is shown
+    document.querySelectorAll('.page').forEach((p, i) => {
+        if (i === 0) {
+            p.classList.add('active');
+            p.hidden = false;
+        } else {
+            p.hidden = true;
+        }
+    });
+});

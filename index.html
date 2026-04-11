@@ -3,168 +3,260 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rachapon Thatprasert - 3D Animator Portfolio</title>
-    
-    <meta name="description" content="Portfolio of Rachapon Thatprasert, 3D Animator. View my animation reels and projects.">
-    <meta property="og:title" content="Rachapon Thatprasert - 3D Animator">
-    <meta property="og:description" content="Welcome to my 3D Animation Portfolio.">
-    <meta property="og:image" content="img/profile.jpg"> 
-    <meta property="og:type" content="website">
+    <title>Rachapon Thatprasert — 3D Animator</title>
 
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Portfolio of Rachapon Thatprasert, a 3D Animator specializing in character animation and motion. View animation reels and portfolio projects.">
+    <meta name="keywords" content="3D Animator, Character Animation, Rachapon Thatprasert, Animation Portfolio, Hypurr, Maya, Blender">
+    <meta name="author" content="Rachapon Thatprasert">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://rachapon.com/">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Rachapon Thatprasert — 3D Animator">
+    <meta property="og:description" content="3D Animation portfolio featuring character animation reels and projects by Rachapon Thatprasert.">
+    <meta property="og:image" content="img/profile.jpg">
+    <meta property="og:image:alt" content="Rachapon Thatprasert - 3D Animator">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://rachapon.com/">
+    <meta property="og:locale" content="th_TH">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Rachapon Thatprasert — 3D Animator">
+    <meta name="twitter:description" content="3D Animation portfolio — character animation reels and projects.">
+    <meta name="twitter:image" content="img/profile.jpg">
+
+    <!-- Favicon -->
     <link rel="icon" href="img/ParkS-Size.png" type="image/png">
-    
+    <link rel="apple-touch-icon" href="img/ParkS-Size.png">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Sarabun:wght@300;400;500&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Sarabun:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Rachapon Thatprasert",
+      "alternateName": "รัชพล ทัศประเสริฐ",
+      "jobTitle": "3D Animator",
+      "url": "https://rachapon.com",
+      "email": "hypurr.con@gmail.com",
+      "sameAs": [
+        "https://www.youtube.com/@Hypurr00",
+        "https://www.tiktok.com/@hypurr_r"
+      ]
+    }
+    </script>
 </head>
 <body>
 
-    <header class="transparent-header">
-        <div class="header-container">
-            <img src="img/ParkS-Size.png" class="side-icon" alt="UFO">
-            <div class="title-group">
-                <h1>Rachapon Thatprasert</h1>
-                <p>3D Animator</p>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <header role="banner">
+        <div class="header-inner">
+            <div class="header-logo">
+                <img src="img/ParkS-Size.png" alt="Rachapon Thatprasert logo" class="logo-img">
             </div>
-            <img src="img/Emote.png" class="side-icon" alt="Planet">
+            <div class="header-text">
+                <h1 class="site-title">Rachapon Thatprasert</h1>
+                <p class="site-sub">3D&nbsp;Animator &nbsp;/&nbsp; Character&nbsp;Animation</p>
+            </div>
+            <div class="header-deco" aria-hidden="true">
+                <img src="img/Emote.png" alt="" class="deco-img">
+            </div>
         </div>
     </header>
 
-    <div class="white-box">
-        
-        <nav class="menu">
-            <a href="#" class="nav-btn active" onclick="switchPage('reels', this)">Reels</a>
-            <a href="#" class="nav-btn" onclick="switchPage('portfolio', this)">Portfolio</a>
-            <a href="resume.pdf" target="_blank" class="nav-btn">Resume</a>
-            <a href="#" class="nav-btn" onclick="switchPage('about', this)">About Me</a>
+    <div class="layout-shell" role="main" id="main-content">
+
+        <nav class="tab-nav" role="navigation" aria-label="Main navigation">
+            <button class="nav-btn active" onclick="switchPage('reels', this)" aria-selected="true" aria-controls="reels" role="tab">Reels</button>
+            <button class="nav-btn" onclick="switchPage('portfolio', this)" aria-selected="false" aria-controls="portfolio" role="tab">Portfolio</button>
+            <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="nav-btn nav-link" aria-label="Download Resume (PDF)">Resume</a>
+            <button class="nav-btn" onclick="switchPage('about', this)" aria-selected="false" aria-controls="about" role="tab">About</button>
         </nav>
 
-        <main class="content">
-            
-            <section id="reels" class="page-section active">
-                <div class="reels-grid single-reel">
-                    <div class="reel-item">
-                        <h2>3D Animation Reel</h2>
-                        <div class="video-placeholder">
-                            <iframe src="https://player.vimeo.com/video/1169127503?title=0&byline=0&portrait=0" width="100%" height="100%" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        <!-- REELS -->
+        <section id="reels" class="page active" role="tabpanel" aria-labelledby="reels-tab">
+            <div class="reel-wrap">
+                <div class="reel-header">
+                    <span class="label-tag">Showreel 2024</span>
+                    <h2>3D Animation Reel</h2>
+                </div>
+                <div class="video-frame">
+                    <iframe
+                        src="https://player.vimeo.com/video/1169127503?title=0&byline=0&portrait=0"
+                        width="100%" height="100%"
+                        frameborder="0"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowfullscreen
+                        title="Rachapon Thatprasert — 3D Animation Reel 2024"
+                        loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- PORTFOLIO -->
+        <section id="portfolio" class="page" role="tabpanel" aria-labelledby="portfolio-tab" hidden>
+            <div class="section-header">
+                <span class="label-tag">Works</span>
+                <h2>Portfolio</h2>
+            </div>
+            <div class="portfolio-grid" role="list">
+
+                <button class="port-item" onclick="openModal('devW0oJUFRk', 'Portfolio 1')" role="listitem" aria-label="Play Portfolio 1">
+                    <img src="https://img.youtube.com/vi/devW0oJUFRk/hqdefault.jpg" alt="Animation project 1" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('dex4vsSgK8A', 'Portfolio 2')" role="listitem" aria-label="Play Portfolio 2">
+                    <img src="https://img.youtube.com/vi/dex4vsSgK8A/hqdefault.jpg" alt="Animation project 2" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('5oIfkuYBtLg', 'Portfolio 3')" role="listitem" aria-label="Play Portfolio 3">
+                    <img src="https://img.youtube.com/vi/5oIfkuYBtLg/hqdefault.jpg" alt="Animation project 3" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('p2Zyb89sXoY', 'Portfolio 4')" role="listitem" aria-label="Play Portfolio 4">
+                    <img src="https://img.youtube.com/vi/p2Zyb89sXoY/hqdefault.jpg" alt="Animation project 4" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('xzfF2g12BP4', 'Portfolio 5')" role="listitem" aria-label="Play Portfolio 5">
+                    <img src="https://img.youtube.com/vi/xzfF2g12BP4/hqdefault.jpg" alt="Animation project 5" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('50XBFJeMdfA', 'Portfolio 6')" role="listitem" aria-label="Play Portfolio 6">
+                    <img src="https://img.youtube.com/vi/50XBFJeMdfA/hqdefault.jpg" alt="Animation project 6" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('9KTGKXc4XYc', 'Portfolio 7')" role="listitem" aria-label="Play Portfolio 7">
+                    <img src="https://img.youtube.com/vi/9KTGKXc4XYc/hqdefault.jpg" alt="Animation project 7" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('-HGcIdC-sAg', 'Portfolio 8')" role="listitem" aria-label="Play Portfolio 8">
+                    <img src="https://img.youtube.com/vi/-HGcIdC-sAg/hqdefault.jpg" alt="Animation project 8" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('R0XCXMMP5G8', 'Portfolio 9')" role="listitem" aria-label="Play Portfolio 9">
+                    <img src="https://img.youtube.com/vi/R0XCXMMP5G8/hqdefault.jpg" alt="Animation project 9" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('4tB731jNpTw', 'Portfolio 10')" role="listitem" aria-label="Play Portfolio 10">
+                    <img src="https://img.youtube.com/vi/4tB731jNpTw/hqdefault.jpg" alt="Animation project 10" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('V8pVpn3ftBQ', 'Portfolio 11')" role="listitem" aria-label="Play Portfolio 11">
+                    <img src="https://img.youtube.com/vi/V8pVpn3ftBQ/hqdefault.jpg" alt="Animation project 11" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('w_EWc5K7SHs', 'Portfolio 12')" role="listitem" aria-label="Play Portfolio 12">
+                    <img src="https://img.youtube.com/vi/w_EWc5K7SHs/hqdefault.jpg" alt="Animation project 12" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('KYIcZnQCRDM', 'Portfolio 13')" role="listitem" aria-label="Play Portfolio 13">
+                    <img src="https://img.youtube.com/vi/KYIcZnQCRDM/hqdefault.jpg" alt="Animation project 13" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('2F-CXlheMWo', 'Portfolio 14')" role="listitem" aria-label="Play Portfolio 14">
+                    <img src="https://img.youtube.com/vi/2F-CXlheMWo/hqdefault.jpg" alt="Animation project 14" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('HmKEqZBP7N8', 'Portfolio 15')" role="listitem" aria-label="Play Portfolio 15">
+                    <img src="https://img.youtube.com/vi/HmKEqZBP7N8/hqdefault.jpg" alt="Animation project 15" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('K_jDPXL4zdk', 'Portfolio 16')" role="listitem" aria-label="Play Portfolio 16">
+                    <img src="https://img.youtube.com/vi/K_jDPXL4zdk/hqdefault.jpg" alt="Animation project 16" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('dEO1n5XmTnA', 'Portfolio 17')" role="listitem" aria-label="Play Portfolio 17">
+                    <img src="https://img.youtube.com/vi/dEO1n5XmTnA/hqdefault.jpg" alt="Animation project 17" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('ixTTWdGs1UY', 'Portfolio 18')" role="listitem" aria-label="Play Portfolio 18">
+                    <img src="https://img.youtube.com/vi/ixTTWdGs1UY/hqdefault.jpg" alt="Animation project 18" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+                <button class="port-item" onclick="openModal('jRConNGJ1Zc', 'Portfolio 19')" role="listitem" aria-label="Play Portfolio 19">
+                    <img src="https://img.youtube.com/vi/jRConNGJ1Zc/hqdefault.jpg" alt="Animation project 19" class="port-thumb" loading="lazy">
+                    <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
+                </button>
+
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about" class="page" role="tabpanel" aria-labelledby="about-tab" hidden>
+            <div class="about-wrap">
+                <div class="about-left">
+                    <div class="profile-ring">
+                        <img src="img/profile.jpg" alt="Rachapon Thatprasert — 3D Animator" class="profile-img">
+                    </div>
+                    <div class="contact-block">
+                        <a href="mailto:hypurr.con@gmail.com" class="contact-link" aria-label="Send email to Rachapon">
+                            <span class="contact-icon" aria-hidden="true">✉</span>
+                            hypurr.con@gmail.com
+                        </a>
+                        <div class="social-row">
+                            <a href="https://www.youtube.com/@Hypurr00" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Rachapon's YouTube channel">YouTube</a>
+                            <a href="https://www.tiktok.com/@hypurr_r" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Rachapon's TikTok">TikTok</a>
                         </div>
                     </div>
                 </div>
-            </section>
-
-            <section id="portfolio" class="page-section">
-                <h2>My Portfolio</h2>
-                <div class="portfolio-grid">
-                    
-                    <div class="port-item" onclick="openModal('devW0oJUFRk')">
-                        <img src="https://img.youtube.com/vi/devW0oJUFRk/hqdefault.jpg" alt="Portfolio 1" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('dex4vsSgK8A')">
-                        <img src="https://img.youtube.com/vi/dex4vsSgK8A/hqdefault.jpg" alt="Portfolio 2" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('5oIfkuYBtLg')">
-                        <img src="https://img.youtube.com/vi/5oIfkuYBtLg/hqdefault.jpg" alt="Portfolio 3" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('p2Zyb89sXoY')">
-                        <img src="https://img.youtube.com/vi/p2Zyb89sXoY/hqdefault.jpg" alt="Portfolio 4" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('xzfF2g12BP4')">
-                        <img src="https://img.youtube.com/vi/xzfF2g12BP4/hqdefault.jpg" alt="Portfolio 5" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('50XBFJeMdfA')">
-                        <img src="https://img.youtube.com/vi/50XBFJeMdfA/hqdefault.jpg" alt="Portfolio 6" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('9KTGKXc4XYc')">
-                        <img src="https://img.youtube.com/vi/9KTGKXc4XYc/hqdefault.jpg" alt="Portfolio 7" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('-HGcIdC-sAg')">
-                        <img src="https://img.youtube.com/vi/-HGcIdC-sAg/hqdefault.jpg" alt="Portfolio 8" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('R0XCXMMP5G8')">
-                        <img src="https://img.youtube.com/vi/R0XCXMMP5G8/hqdefault.jpg" alt="Portfolio 9" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('4tB731jNpTw')">
-                        <img src="https://img.youtube.com/vi/4tB731jNpTw/hqdefault.jpg" alt="Portfolio 10" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('V8pVpn3ftBQ')">
-                        <img src="https://img.youtube.com/vi/V8pVpn3ftBQ/hqdefault.jpg" alt="Portfolio 11" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('w_EWc5K7SHs')">
-                        <img src="https://img.youtube.com/vi/w_EWc5K7SHs/hqdefault.jpg" alt="Portfolio 12" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('KYIcZnQCRDM')">
-                        <img src="https://img.youtube.com/vi/KYIcZnQCRDM/hqdefault.jpg" alt="Portfolio 13" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                        <div class="port-item" onclick="openModal('2F-CXlheMWo')">
-                        <img src="https://img.youtube.com/vi/2F-CXlheMWo/hqdefault.jpg" alt="Portfolio 14" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('HmKEqZBP7N8')">
-                        <img src="https://img.youtube.com/vi/HmKEqZBP7N8/hqdefault.jpg" alt="Portfolio 15" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('K_jDPXL4zdk')">
-                        <img src="https://img.youtube.com/vi/K_jDPXL4zdk/hqdefault.jpg" alt="Portfolio 16" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('dEO1n5XmTnA')">
-                        <img src="https://img.youtube.com/vi/dEO1n5XmTnA/hqdefault.jpg" alt="Portfolio 17" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('ixTTWdGs1UY')">
-                        <img src="https://img.youtube.com/vi/ixTTWdGs1UY/hqdefault.jpg" alt="Portfolio 18" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-                    <div class="port-item" onclick="openModal('jRConNGJ1Zc')">
-                        <img src="https://img.youtube.com/vi/jRConNGJ1Zc/hqdefault.jpg" alt="Portfolio 19" class="port-thumb">
-                        <div class="play-overlay">▶</div>
-                    </div>
-
-                </div>
-            </section>
-
-            <section id="about" class="page-section">
-                <div class="about-container">
-                    <div class="profile-pic-container">
-                        <img src="img/profile.jpg" alt="Rachapon Thatprasert" class="profile-pic">
-                    </div>
-                    
-                    <div class="about-text">
-                        <h2>รัชพล ทัศประเสริฐ</h2>
-                        <p>ผมหลงใหลในโลกของ 3D Animation มาตั้งแต่เด็ก ยังรู้สึกสนุกทุกครั้งที่ได้ขยับตัวละครให้มีชีวิตและเป็นธรรมชาติคือความท้าทายที่ผมสนุกกับมันเสมอ ผมสนุกกับการเรียนรู้เทคนิคใหม่ๆ และพร้อมเปิดรับประสบการณ์ในสภาพแวดล้อมการทำงานจริง เพื่อพัฒนาฝีมือให้มีความมืออาชีพมากขึ้น</p>
-                        <br>
+                <div class="about-right">
+                    <span class="label-tag">About Me</span>
+                    <h2 class="about-name">รัชพล ทัศประเสริฐ</h2>
+                    <div class="about-bio">
+                        <p>ผมหลงใหลในโลกของ 3D Animation มาตั้งแต่เด็ก ยังรู้สึกสนุกทุกครั้งที่ได้ขยับตัวละครให้มีชีวิต — ความท้าทายที่ผมสนุกกับมันเสมอ ผมสนุกกับการเรียนรู้เทคนิคใหม่ๆ และพร้อมเปิดรับประสบการณ์ในสภาพแวดล้อมการทำงานจริง เพื่อพัฒนาฝีมือให้มีความมืออาชีพมากขึ้น</p>
                         <p>นอกจากโปรเจกต์ในมหาวิทยาลัย ผมยังสร้างคอนเทนต์แอนิเมชันผ่านช่อง <strong>Hypurr</strong> ทั้งบน TikTok และ YouTube</p>
-                        <br>
-                        <p>Contact me at <strong>hypurr.con@gmail.com</strong></p>
                     </div>
+                    <div class="skills-list" aria-label="Skills">
+                        <span class="skill-chip">Character Animation</span>
+                        <span class="skill-chip">Body Mechanics</span>
+                        <span class="skill-chip">Facial Performance</span>
+                        <span class="skill-chip">Maya</span>
+                        <span class="skill-chip">Blender</span>
+                        <span class="skill-chip">After Effects</span>
+                    </div>
+                    <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-cta" aria-label="Download Resume PDF">
+                        Download Resume
+                        <span aria-hidden="true"> ↗</span>
+                    </a>
                 </div>
+            </div>
+        </section>
 
-                <div class="action-buttons">
-                    <a href="resume.pdf" target="_blank" class="btn btn-green">Resume</a>
-                    <a href="https://www.youtube.com/@Hypurr00" target="_blank" class="btn btn-green">YouTube</a>
-                    <a href="https://www.tiktok.com/@hypurr_r" target="_blank" class="btn btn-green">TikTok</a>
-                </div>
-            </section>
-
-        </main>
     </div>
 
-    <div id="video-modal" class="modal" onclick="closeModal(event)">
-        <span class="close-btn" onclick="closeModal(event)">&times;</span>
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <iframe id="modal-iframe" src="" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+    <footer role="contentinfo">
+        <p class="footer-copy">&copy; <span id="year"></span> Rachapon Thatprasert. All rights reserved.</p>
+        <p class="footer-note">Designed &amp; built by Rachapon Thatprasert</p>
+    </footer>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+        <div class="modal-backdrop" onclick="closeModal()"></div>
+        <div class="modal-box">
+            <div class="modal-top">
+                <span id="modal-title" class="modal-label">Now Playing</span>
+                <button class="modal-close" onclick="closeModal()" aria-label="Close video">&#x2715;</button>
+            </div>
+            <div class="modal-video">
+                <iframe id="modal-iframe" src="" frameborder="0"
+                    allow="autoplay; fullscreen; picture-in-picture"
+                    allowfullscreen
+                    title="Portfolio video"
+                    loading="lazy">
+                </iframe>
+            </div>
         </div>
     </div>
 
