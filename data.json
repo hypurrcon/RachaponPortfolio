@@ -1,0 +1,52 @@
+{
+    "reelUrl": "https://player.vimeo.com/video/1169127503?title=0&byline=0&portrait=0",
+    "portfolio": [
+        "devW0oJUFRk",
+        "dex4vsSgK8A",
+        "5oIfkuYBtLg",
+        "p2Zyb89sXoY",
+        "xzfF2g12BP4",
+        "50XBFJeMdfA",
+        "9KTGKXc4XYc",
+        "-HGcIdC-sAg",
+        "R0XCXMMP5G8",
+        "4tB731jNpTw",
+        "V8pVpn3ftBQ",
+        "w_EWc5K7SHs",
+        "KYIcZnQCRDM",
+        "2F-CXlheMWo",
+        "HmKEqZBP7N8",
+        "K_jDPXL4zdk",
+        "dEO1n5XmTnA",
+        "ixTTWdGs1UY",
+        "jRConNGJ1Zc"
+    ],
+    "profile": {
+        "nameTH": "รัชพล ทัศประเสริฐ",
+        "nameEN": "Rachapon Thatprasert",
+        "role": "3D Animator / Character Animation",
+        "bio": "ผมหลงใหลังในโลกของ 3D Animation มาตั้งแต่เด็ก ยังรู้สึกสนุกทุกครั้งที่ได้ขยับตัวละครให้มีชีวิต — ความท้าทายที่ผมสนุกกับมันเสมอ\n\nนอกจากโปรเจกต์ในมหาวิทยาลัย ผมยังสร้างคอนเทนต์แอนิเมชันผ่านช่อง Hypurr ทั้งบน TikTok และ YouTube",
+        "email": "hypurr.con@gmail.com",
+        "youtube": "https://www.youtube.com/@Hypurr00",
+        "tiktok": "https://www.tiktok.com/@hypurr_r",
+        "skills": [
+            "Maya",
+            "Blender",
+            "After Effects"
+        ],
+        "reelYear": "2024",
+        "reelCaption": "Character animation · Body mechanics · Facial performance",
+        "socials": [
+            {
+                "label": "YouTube",
+                "url": "https://www.youtube.com/@Hypurr00"
+            },
+            {
+                "label": "TikTok",
+                "url": "https://www.tiktok.com/@hypurr_r"
+            }
+        ]
+    },
+    "theme": "cyan",
+    "themeBg": "deep"
+}

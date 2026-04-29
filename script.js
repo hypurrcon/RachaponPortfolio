@@ -1,476 +1,784 @@
 /* =============================================
-   RACHAPON THATPRASERT — Portfolio Script
+   PORTFOLIO SCRIPT  v3  — Theme + All features
    ============================================= */
 
-/* ================================================
-   DATA — แก้ไขผ่าน Admin Panel แล้ว Export
-   ================================================ */
-const PORTFOLIO_DATA = {
-    reelUrl: 'https://player.vimeo.com/video/1169127503?title=0&byline=0&portrait=0',
+/* ---- Embedded fallback data (used if data.json unreachable) ---- */
+const FALLBACK_DATA = {
+    reelUrl: "https://player.vimeo.com/video/1169127503?title=0&byline=0&portrait=0",
     portfolio: [
-        'devW0oJUFRk','dex4vsSgK8A','5oIfkuYBtLg','p2Zyb89sXoY',
-        'xzfF2g12BP4','50XBFJeMdfA','9KTGKXc4XYc','-HGcIdC-sAg',
-        'R0XCXMMP5G8','4tB731jNpTw','V8pVpn3ftBQ','w_EWc5K7SHs',
-        'KYIcZnQCRDM','2F-CXlheMWo','HmKEqZBP7N8','K_jDPXL4zdk',
-        'dEO1n5XmTnA','ixTTWdGs1UY','jRConNGJ1Zc'
-    ]
+        "devW0oJUFRk","dex4vsSgK8A","5oIfkuYBtLg","p2Zyb89sXoY",
+        "xzfF2g12BP4","50XBFJeMdfA","9KTGKXc4XYc","-HGcIdC-sAg",
+        "R0XCXMMP5G8","4tB731jNpTw","V8pVpn3ftBQ","w_EWc5K7SHs",
+        "KYIcZnQCRDM","2F-CXlheMWo","HmKEqZBP7N8","K_jDPXL4zdk",
+        "dEO1n5XmTnA","ixTTWdGs1UY","jRConNGJ1Zc"
+    ],
+    profile: {
+        nameTH: "\u0e23\u0e31\u0e0a\u0e1e\u0e25 \u0e17\u0e31\u0e28\u0e1b\u0e23\u0e30\u0e40\u0e2a\u0e23\u0e34\u0e10",
+        nameEN: "Rachapon Thatprasert",
+        role:   "3D Animator / Character Animation",
+        bio:    "\u0e1c\u0e21\u0e2b\u0e25\u0e07\u0e43\u0e2b\u0e25\u0e31\u0e07\u0e43\u0e19\u0e42\u0e25\u0e01\u0e02\u0e2d\u0e07 3D Animation \u0e21\u0e32\u0e15\u0e31\u0e49\u0e07\u0e41\u0e15\u0e48\u0e40\u0e14\u0e47\u0e01 \u0e22\u0e31\u0e07\u0e23\u0e39\u0e49\u0e2a\u0e36\u0e01\u0e2a\u0e19\u0e38\u0e01\u0e17\u0e38\u0e01\u0e04\u0e23\u0e31\u0e49\u0e07\u0e17\u0e35\u0e48\u0e44\u0e14\u0e49\u0e02\u0e22\u0e31\u0e1a\u0e15\u0e31\u0e27\u0e25\u0e30\u0e04\u0e23\u0e43\u0e2b\u0e49\u0e21\u0e35\u0e0a\u0e35\u0e27\u0e34\u0e15 \u2014 \u0e04\u0e27\u0e32\u0e21\u0e17\u0e49\u0e32\u0e17\u0e32\u0e22\u0e17\u0e35\u0e48\u0e1c\u0e21\u0e2a\u0e19\u0e38\u0e01\u0e01\u0e31\u0e1a\u0e21\u0e31\u0e19\u0e40\u0e2a\u0e21\u0e2d\n\n\u0e19\u0e2d\u0e01\u0e08\u0e32\u0e01\u0e42\u0e1b\u0e23\u0e40\u0e08\u0e01\u0e15\u0e4c\u0e43\u0e19\u0e21\u0e2b\u0e32\u0e27\u0e34\u0e17\u0e22\u0e32\u0e25\u0e31\u0e22 \u0e1c\u0e21\u0e22\u0e31\u0e07\u0e2a\u0e23\u0e49\u0e32\u0e07\u0e04\u0e2d\u0e19\u0e40\u0e17\u0e19\u0e15\u0e4c\u0e41\u0e2d\u0e19\u0e34\u0e40\u0e21\u0e0a\u0e31\u0e19\u0e1c\u0e48\u0e32\u0e19\u0e0a\u0e48\u0e2d\u0e07 Hypurr \u0e17\u0e31\u0e49\u0e07\u0e1a\u0e19 TikTok \u0e41\u0e25\u0e30 YouTube",
+        email:   "hypurr.con@gmail.com",
+        socials: [
+            { label: "YouTube", url: "https://www.youtube.com/@Hypurr00" },
+            { label: "TikTok",  url: "https://www.tiktok.com/@hypurr_r"  }
+        ],
+        skills:  ["Character Animation","Body Mechanics","Facial Performance","Maya","Blender","After Effects"],
+        reelYear:    "2024",
+        reelCaption: "Character animation \u00b7 Body mechanics \u00b7 Facial performance"
+    }
 };
 
-/* Working copy — edited in memory during admin session */
-let appData = JSON.parse(JSON.stringify(PORTFOLIO_DATA));
+let appData = null;
+var hasUnsaved = false;
+var LS_DATA_KEY = "pf_data";
 
-/* ================================================
-   SECURITY — SHA-256 + Rate Limiting
-   ================================================ */
-const ADMIN_PASS_HASH_KEY = 'p_hash';
-const LOCKOUT_KEY         = 'p_lock';
-const DEFAULT_PASS        = 'rachapon2024';
-const MAX_ATTEMPTS        = 3;
-const LOCKOUT_MS          = 30000;
-
-async function sha256(str) {
-    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+function saveToLocal() {
+    try {
+        // store everything except theme (theme has its own keys)
+        localStorage.setItem(LS_DATA_KEY, JSON.stringify(appData));
+    } catch(e) {}
 }
 
-async function getStoredHash() {
-    let h = sessionStorage.getItem(ADMIN_PASS_HASH_KEY);
-    if (!h) {
-        h = await sha256(DEFAULT_PASS);
-        sessionStorage.setItem(ADMIN_PASS_HASH_KEY, h);
-    }
-    return h;
-}
-
-function getLockout() {
-    try { return JSON.parse(sessionStorage.getItem(LOCKOUT_KEY)) || { attempts: 0, until: 0 }; }
-    catch { return { attempts: 0, until: 0 }; }
-}
-function setLockout(o) { sessionStorage.setItem(LOCKOUT_KEY, JSON.stringify(o)); }
-function clearLockout() { sessionStorage.removeItem(LOCKOUT_KEY); }
-
-function isLockedOut() {
-    const lock = getLockout();
-    if (lock.until && Date.now() < lock.until) return true;
-    if (lock.until && Date.now() >= lock.until) setLockout({ attempts: 0, until: 0 });
-    return false;
-}
-
-function recordFail() {
-    const lock = getLockout();
-    lock.attempts = (lock.attempts || 0) + 1;
-    if (lock.attempts >= MAX_ATTEMPTS) lock.until = Date.now() + LOCKOUT_MS;
-    setLockout(lock);
-    return lock;
+function loadFromLocal() {
+    try {
+        var raw = localStorage.getItem(LS_DATA_KEY);
+        return raw ? JSON.parse(raw) : null;
+    } catch(e) { return null; }
 }
 
 /* ================================================
-   ANTI-TAMPER
+   THEME SYSTEM
    ================================================ */
-/* Block iframe embedding */
-if (window.self !== window.top) {
-    document.documentElement.style.display = 'none';
-    window.top.location = window.self.location;
+const THEMES = [
+    { id: "lime",   label: "Lime",   accent: "#c8f250", accent2: "#7ef2e2" },
+    { id: "cyan",   label: "Cyan",   accent: "#4af0d8", accent2: "#4a9fff" },
+    { id: "coral",  label: "Coral",  accent: "#ff7b6b", accent2: "#ffb347" },
+    { id: "gold",   label: "Gold",   accent: "#ffd460", accent2: "#ffa040" },
+    { id: "violet", label: "Violet", accent: "#c084fc", accent2: "#818cf8" },
+    { id: "pink",   label: "Pink",   accent: "#f472b6", accent2: "#fb7185" }
+];
+
+const BG_VARS = {
+    dark:  { "--bg": "#0a0a0c", "--surface": "#111116", "--surface2": "#18181f" },
+    deep:  { "--bg": "#04040a", "--surface": "#0c0c14", "--surface2": "#14141e" },
+    warm:  { "--bg": "#0e0c0a", "--surface": "#181410", "--surface2": "#201c18" },
+    light: null  // handled by data-bg="light" attribute
+};
+
+let currentTheme = "lime";
+let currentBg    = "dark";
+
+function applyTheme(themeId, bgId) {
+    currentTheme = themeId || currentTheme;
+    currentBg    = bgId    || currentBg;
+
+    const t = THEMES.find(function(x){ return x.id === currentTheme; }) || THEMES[0];
+    const root = document.documentElement;
+
+    // accent colors
+    root.style.setProperty("--accent",  t.accent);
+    root.style.setProperty("--accent2", t.accent2);
+
+    // accent glow on logo
+    const logo = document.querySelector(".logo-img");
+    if (logo) logo.style.filter = "drop-shadow(0 0 14px " + hexAlpha(t.accent, 0.4) + ")";
+    const deco = document.querySelector(".deco-img");
+    if (deco) deco.style.filter = "drop-shadow(0 0 14px " + hexAlpha(t.accent2, 0.4) + ")";
+
+    // bg
+    if (currentBg === "light") {
+        root.setAttribute("data-bg", "light");
+        // reset custom bg vars (CSS handles it via attribute)
+        ["--bg","--surface","--surface2"].forEach(function(v){ root.style.removeProperty(v); });
+    } else {
+        root.removeAttribute("data-bg");
+        const bgVars = BG_VARS[currentBg] || BG_VARS.dark;
+        Object.keys(bgVars).forEach(function(k){ root.style.setProperty(k, bgVars[k]); });
+    }
+
+    // header glow colour
+    const headerBefore = document.querySelector("header");
+    if (headerBefore) {
+        headerBefore.style.setProperty("--glow-accent", hexAlpha(t.accent, 0.07));
+    }
+
+    // persist to localStorage so reload keeps theme without needing push
+    try {
+        localStorage.setItem("pf_theme", currentTheme);
+        localStorage.setItem("pf_bg",    currentBg);
+    } catch(e){}
+
+    // sync swatch UIs
+    syncSwatchUI();
 }
 
-/* Detect DevTools (size heuristic) */
-let devToolsOpen = false;
-(function() {
-    const threshold = 160;
-    function check() {
-        devToolsOpen = (window.outerWidth - window.innerWidth > threshold) ||
-                       (window.outerHeight - window.innerHeight > threshold);
-    }
-    check();
-    setInterval(check, 1500);
-})();
-
-/* Block DevTools keys while Admin Panel is open */
-function blockDevKeys(e) {
-    const panel = document.getElementById('admin-panel');
-    if (!panel || panel.hidden) { document.removeEventListener('keydown', blockDevKeys); return; }
-    if (e.key === 'F12' ||
-       (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key)) ||
-       (e.ctrlKey && e.key === 'U')) {
-        e.preventDefault();
-    }
+function hexAlpha(hex, a) {
+    // convert #rrggbb to rgba()
+    var r = parseInt(hex.slice(1,3),16);
+    var g = parseInt(hex.slice(3,5),16);
+    var b = parseInt(hex.slice(5,7),16);
+    return "rgba(" + r + "," + g + "," + b + "," + a + ")";
 }
 
-/* ================================================
-   SECRET TRIGGER — type "admin" anywhere on page
-   (not while focused in an input)
-   Disabled when DevTools is open.
-   ================================================ */
-(function() {
-    const SECRET = ['a','d','m','i','n'];
-    let buf = [], timer;
-    document.addEventListener('keydown', e => {
-        const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : '';
-        if (tag === 'input' || tag === 'textarea') return;
-        const ap = document.getElementById('admin-panel');
-        if (ap && !ap.hidden) return;
-        if (devToolsOpen) return;
-        buf.push(e.key.toLowerCase());
-        clearTimeout(timer);
-        timer = setTimeout(() => { buf = []; }, 3000);
-        if (buf.length > SECRET.length) buf.shift();
-        if (buf.join('') === SECRET.join('')) { buf = []; openAdmin(); }
+function syncSwatchUI() {
+    // both floating panel and admin panel
+    ["admin-theme-swatches"].forEach(function(containerId){
+        var el = document.getElementById(containerId);
+        if (!el) return;
+        el.querySelectorAll(".theme-swatch").forEach(function(s){
+            s.classList.toggle("active", s.getAttribute("data-theme") === currentTheme);
+        });
     });
-})();
+    ["admin-bg-btns"].forEach(function(containerId){
+        var el = document.getElementById(containerId);
+        if (!el) return;
+        el.querySelectorAll(".bg-btn").forEach(function(b){
+            b.classList.toggle("active", b.getAttribute("data-bg") === currentBg);
+        });
+    });
+}
+
+function buildSwatches(containerId) {
+    var el = document.getElementById(containerId);
+    if (!el) return;
+    el.innerHTML = "";
+    THEMES.forEach(function(t){
+        var btn = document.createElement("button");
+        btn.className = "theme-swatch" + (t.id === currentTheme ? " active" : "");
+        btn.setAttribute("data-theme", t.id);
+        btn.setAttribute("aria-label", t.label);
+        btn.setAttribute("title", t.label);
+        btn.style.background = t.accent;
+        btn.addEventListener("click", function(){
+            applyTheme(t.id, null);
+            setAdminStatus("\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19 Theme \u0e41\u0e25\u0e49\u0e27 \u2014 \u0e2d\u0e22\u0e48\u0e32\u0e25\u0e37\u0e21 Export JSON");
+        });
+        el.appendChild(btn);
+    });
+}
+
+function initThemePicker() {
+    // Restore theme from data.json (set during loadData)
+    // Build admin swatch UI
+    buildSwatches("admin-theme-swatches");
+    applyTheme(currentTheme, currentBg);
+
+    // bg buttons — admin panel only
+    var container = document.getElementById("admin-bg-btns");
+    if (container) {
+        container.addEventListener("click", function(e){
+            var btn = e.target.closest(".bg-btn");
+            if (!btn) return;
+            applyTheme(null, btn.getAttribute("data-bg"));
+            setAdminStatus("\u0e21\u0e35\u0e01\u0e32\u0e23\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e41\u0e1b\u0e25\u0e07 \u2014 \u0e2d\u0e22\u0e48\u0e32\u0e25\u0e37\u0e21 Export JSON");
+        });
+    }
+}
+
+/* ================================================
+   LOAD DATA
+   ================================================ */
+async function loadData() {
+    // 1. Try localStorage first (last-saved state by admin)
+    var local = loadFromLocal();
+    if (local) {
+        appData = local;
+    } else {
+        // 2. Fall back to data.json (fresh browser / first visit)
+        try {
+            var res = await fetch("data.json?t=" + Date.now());
+            if (!res.ok) throw new Error("not found");
+            appData = await res.json();
+        } catch(e) {
+            appData = JSON.parse(JSON.stringify(FALLBACK_DATA));
+        }
+    }
+    // Migrate old youtube/tiktok fields → socials array
+    if (appData.profile && !appData.profile.socials) {
+        appData.profile.socials = [];
+        if (appData.profile.youtube) appData.profile.socials.push({ label: "YouTube", url: appData.profile.youtube });
+        if (appData.profile.tiktok)  appData.profile.socials.push({ label: "TikTok",  url: appData.profile.tiktok  });
+    }
+    // Theme priority: localStorage theme keys > appData.theme
+    try {
+        var lsTheme = localStorage.getItem("pf_theme");
+        var lsBg    = localStorage.getItem("pf_bg");
+        currentTheme = lsTheme || appData.theme   || currentTheme;
+        currentBg    = lsBg    || appData.themeBg || currentBg;
+    } catch(e) {
+        if (appData.theme)   currentTheme = appData.theme;
+        if (appData.themeBg) currentBg    = appData.themeBg;
+    }
+}
 
 /* ================================================
    RENDER
    ================================================ */
+function renderAll() {
+    renderHeader();
+    renderReel();
+    renderPortfolio();
+    renderAbout();
+    renderFooter();
+}
+
+function renderHeader() {
+    var p = appData.profile;
+    setText("header-name", p.nameEN || "—");
+    setText("header-role", p.role   || "");
+    document.title = (p.nameEN || "Portfolio") + " \u2014 3D Animator";
+}
+
 function renderReel() {
-    const iframe = document.getElementById('reel-iframe');
-    if (iframe) iframe.src = appData.reelUrl;
+    var p = appData.profile;
+    var iframe = document.getElementById("reel-iframe");
+    // Lazy: only set src when reel tab is active
+    if (iframe) iframe.setAttribute("data-src", appData.reelUrl || "");
+    setText("reel-year-tag",    "Showreel " + (p.reelYear || ""));
+    setText("reel-caption-text", p.reelCaption || "");
+}
+
+function lazyLoadReel() {
+    var iframe = document.getElementById("reel-iframe");
+    if (!iframe) return;
+    var src = iframe.getAttribute("data-src");
+    if (src && iframe.src !== src) iframe.src = src;
 }
 
 function renderPortfolio() {
-    const grid = document.getElementById('portfolio-grid');
+    var grid = document.getElementById("portfolio-grid");
     if (!grid) return;
-    grid.innerHTML = '';
-    appData.portfolio.forEach((id, idx) => {
-        const btn = document.createElement('button');
-        btn.className = 'port-item';
-        btn.setAttribute('aria-label', `Play Portfolio ${idx + 1}`);
-        btn.onclick = () => openModal(id, `Portfolio ${idx + 1}`);
-        btn.innerHTML = `
-            <img src="https://img.youtube.com/vi/${id}/hqdefault.jpg"
-                 alt="Animation project ${idx + 1}" class="port-thumb" loading="lazy">
-            <div class="port-overlay" aria-hidden="true"><span class="play-icon">▶</span></div>
-        `;
-        grid.appendChild(btn);
+    var items = appData.portfolio || [];
+
+    // Show skeletons first
+    grid.innerHTML = "";
+    items.forEach(function(){ 
+        var sk = document.createElement("div");
+        sk.className = "port-item skeleton port-skeleton";
+        grid.appendChild(sk);
     });
+
+    // Replace skeletons with real thumbnails after a tick
+    requestAnimationFrame(function(){
+        grid.innerHTML = "";
+        items.forEach(function(id, idx){
+            var safeId = id.replace(/[^A-Za-z0-9_\-]/g,"");
+            var btn = document.createElement("button");
+            btn.className = "port-item";
+            btn.setAttribute("aria-label", "Play Portfolio " + (idx+1));
+            btn.setAttribute("role", "listitem");
+            btn.addEventListener("click", function(){ openModal(safeId, "Portfolio " + (idx+1)); });
+            btn.innerHTML =
+                "<img src=\"https://img.youtube.com/vi/" + safeId + "/hqdefault.jpg\"" +
+                " alt=\"Animation project " + (idx+1) + "\" class=\"port-thumb\" loading=\"lazy\">" +
+                "<div class=\"port-overlay\" aria-hidden=\"true\">" +
+                  "<span class=\"play-icon\">&#9654;</span>" +
+                "</div>" +
+                "<span class=\"port-num\">" + (idx+1) + "</span>";
+            grid.appendChild(btn);
+        });
+        // count
+        var countEl = document.getElementById("portfolio-count");
+        if (countEl) countEl.textContent = items.length + " videos";
+    });
+}
+
+function renderAbout() {
+    var p = appData.profile;
+    setText("about-name-th", p.nameTH || "");
+    var bioEl = document.getElementById("about-bio");
+    if (bioEl && p.bio) {
+        bioEl.innerHTML = p.bio.split("\n").map(function(l){ return l.trim(); }).filter(Boolean)
+            .map(function(l){ return "<p>" + l + "</p>"; }).join("");
+    }
+    var emailLink = document.getElementById("about-email-link");
+    var emailText = document.getElementById("about-email-text");
+    if (emailLink && p.email) emailLink.href = "mailto:" + p.email;
+    if (emailText && p.email) emailText.textContent = p.email;
+    // dynamic socials
+    var socialRow = document.getElementById("social-row");
+    if (socialRow) {
+        socialRow.innerHTML = "";
+        (p.socials || []).forEach(function(s) {
+            if (!s.label || !s.url) return;
+            var a = document.createElement("a");
+            a.href = s.url;
+            a.target = "_blank";
+            a.rel = "noopener noreferrer";
+            a.className = "social-btn";
+            a.textContent = s.label;
+            socialRow.appendChild(a);
+        });
+    }
+    var skillsEl = document.getElementById("skills-list");
+    if (skillsEl && p.skills) {
+        skillsEl.innerHTML = p.skills.map(function(s){
+            return "<span class=\"skill-chip\">" + s + "</span>";
+        }).join("");
+    }
+}
+
+function renderFooter() {
+    var name = appData.profile.nameEN || "";
+    setText("footer-name",  name);
+    setText("footer-name2", name);
 }
 
 /* ================================================
    PAGE NAV
    ================================================ */
-function switchPage(pageId, el) {
-    document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.hidden = true; });
-    const t = document.getElementById(pageId);
-    if (t) { t.classList.add('active'); t.hidden = false; }
-    document.querySelectorAll('.nav-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected','false'); });
-    if (el) { el.classList.add('active'); el.setAttribute('aria-selected','true'); }
-    const shell = document.querySelector('.layout-shell');
-    if (shell) window.scrollTo({ top: shell.getBoundingClientRect().top + window.pageYOffset - 16, behavior: 'smooth' });
+function switchPage(pageId, clickedBtn) {
+    document.querySelectorAll(".page").forEach(function(p){
+        p.classList.remove("active");
+        p.hidden = true;
+    });
+    var target = document.getElementById(pageId);
+    if (target) { target.classList.add("active"); target.hidden = false; }
+
+    document.querySelectorAll(".nav-btn[data-page]").forEach(function(b){
+        b.classList.remove("active");
+        b.setAttribute("aria-selected","false");
+    });
+    if (clickedBtn) { clickedBtn.classList.add("active"); clickedBtn.setAttribute("aria-selected","true"); }
+
+    // Lazy-load reel iframe only when reels tab is opened
+    if (pageId === "reels") lazyLoadReel();
+
+    var shell = document.querySelector(".layout-shell");
+    if (shell) window.scrollTo({ top: shell.getBoundingClientRect().top + window.pageYOffset - 16, behavior: "smooth" });
 }
 
 /* ================================================
    VIDEO MODAL
    ================================================ */
 function openModal(youtubeId, title) {
-    const modal = document.getElementById('video-modal');
-    const iframe = document.getElementById('modal-iframe');
-    const label  = document.getElementById('modal-title');
+    var modal  = document.getElementById("video-modal");
+    var iframe = document.getElementById("modal-iframe");
+    var label  = document.getElementById("modal-title");
     if (!modal || !iframe) return;
-    iframe.src = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0`;
-    if (label) label.textContent = title || 'Now Playing';
+    iframe.src = "https://www.youtube.com/embed/" + youtubeId + "?autoplay=1&rel=0";
+    if (label) label.textContent = title || "Now Playing";
     modal.hidden = false;
-    document.body.style.overflow = 'hidden';
-    const cb = modal.querySelector('.modal-close');
+    document.body.style.overflow = "hidden";
+    var cb = document.getElementById("modal-close-btn");
     if (cb) cb.focus();
 }
 function closeModal() {
-    const modal = document.getElementById('video-modal');
-    const iframe = document.getElementById('modal-iframe');
+    var modal  = document.getElementById("video-modal");
+    var iframe = document.getElementById("modal-iframe");
     if (!modal) return;
-    iframe.src = '';
+    if (iframe) iframe.src = "";
     modal.hidden = true;
-    document.body.style.overflow = '';
+    document.body.style.overflow = "";
 }
-
-document.addEventListener('keydown', e => {
-    if (e.key !== 'Escape') return;
-    const vm = document.getElementById('video-modal');
-    if (vm && !vm.hidden) closeModal();
-    const ap = document.getElementById('admin-panel');
-    if (ap && !ap.hidden) closeAdmin();
-});
 
 /* ================================================
-   ADMIN PANEL
+   ADMIN — type "admin" on keyboard
    ================================================ */
-function openAdmin() {
-    const panel = document.getElementById('admin-panel');
-    if (!panel) return;
-    /* Reset working copy from source-of-truth each time admin opens */
-    appData = JSON.parse(JSON.stringify(PORTFOLIO_DATA));
-    panel.hidden = false;
-    document.body.style.overflow = 'hidden';
-    document.addEventListener('keydown', blockDevKeys);
-    showView('login-view');
-    updateLockoutUI();
-}
+(function(){
+    var SECRET = "admin", buf = "", timer = null;
+    document.addEventListener("keydown", function(e){
+        var tag = document.activeElement ? document.activeElement.tagName.toUpperCase() : "";
+        if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+        var ap = document.getElementById("admin-panel");
+        if (ap && !ap.hidden) return;
+        buf += e.key.toLowerCase();
+        clearTimeout(timer);
+        timer = setTimeout(function(){ buf = ""; }, 2000);
+        if (buf.length > SECRET.length) buf = buf.slice(-SECRET.length);
+        if (buf === SECRET) { buf = ""; openAdmin(); }
+    });
+})();
 
-function closeAdmin() {
-    const panel = document.getElementById('admin-panel');
+function openAdmin() {
+    var panel = document.getElementById("admin-panel");
+    if (!panel) return;
+    panel.hidden = false;
+    document.body.style.overflow = "hidden";
+    var dv = document.getElementById("dashboard-view");
+    if (dv) dv.style.display = "block";
+    populateDashboard();
+    buildSwatches("admin-theme-swatches");
+    syncSwatchUI();
+}
+function closeAdmin(force) {
+    if (!force && hasUnsaved) {
+        var ok = confirm("\u0e22\u0e31\u0e07\u0e44\u0e21\u0e48\u0e44\u0e14\u0e49 Export JSON\n\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e17\u0e35\u0e48\u0e41\u0e01\u0e49\u0e44\u0e02\u0e08\u0e30\u0e2b\u0e32\u0e22\u0e2b\u0e32\u0e01\u0e1b\u0e34\u0e14\u0e40\u0e1b\u0e25\u0e48\u0e32\u0e19\u0e40\u0e27\u0e47\u0e1a\n\n\u0e1b\u0e34\u0e14\u0e42\u0e14\u0e22\u0e44\u0e21\u0e48 Export?");
+        if (!ok) return;
+    }
+    hasUnsaved = false;
+    var panel = document.getElementById("admin-panel");
     if (!panel) return;
     panel.hidden = true;
-    document.body.style.overflow = '';
-    document.removeEventListener('keydown', blockDevKeys);
-    clearInterval(window._lockCountdown);
+    document.body.style.overflow = "";
 }
 
-function showView(id) {
-    ['login-view','dashboard-view'].forEach(v => {
-        const el = document.getElementById(v);
-        if (el) el.style.display = v === id ? 'block' : 'none';
-    });
-}
 
-/* -- Lockout UI -- */
-function updateLockoutUI() {
-    const btn = document.getElementById('login-btn');
-    const err = document.getElementById('login-error');
-    const pi  = document.getElementById('admin-pass-input');
-    clearInterval(window._lockCountdown);
-
-    if (isLockedOut()) {
-        if (pi)  pi.disabled = true;
-        if (btn) btn.disabled = true;
-        window._lockCountdown = setInterval(() => {
-            const lock = getLockout();
-            const rem  = Math.max(0, Math.ceil((lock.until - Date.now()) / 1000));
-            if (rem <= 0) {
-                clearInterval(window._lockCountdown);
-                if (pi)  pi.disabled = false;
-                if (btn) btn.disabled = false;
-                if (err) err.textContent = '';
-            } else {
-                if (err) { err.style.color = '#f28b82'; err.textContent = `ถูกล็อก ${rem} วินาที`; }
-            }
-        }, 500);
-    } else {
-        const lock = getLockout();
-        if (lock.attempts > 0 && err) {
-            const left = MAX_ATTEMPTS - lock.attempts;
-            err.style.color = '#f28b82';
-            err.textContent = `รหัสผ่านไม่ถูกต้อง — เหลือ ${left} ครั้ง`;
-        }
-        if (pi)  pi.disabled = false;
-        if (btn) btn.disabled = false;
-    }
-}
-
-async function adminLogin() {
-    if (isLockedOut()) { updateLockoutUI(); return; }
-    const pi   = document.getElementById('admin-pass-input');
-    const err  = document.getElementById('login-error');
-    const pass = pi ? pi.value : '';
-    if (!pass) return;
-
-    const inputHash  = await sha256(pass);
-    const storedHash = await getStoredHash();
-
-    if (inputHash === storedHash) {
-        clearLockout();
-        pi.value = '';
-        if (err) err.textContent = '';
-        showView('dashboard-view');
-        populateDashboard();
-    } else {
-        pi.value = '';
-        const lock = recordFail();
-        if (lock.until) {
-            if (pi) pi.disabled = true;
-            document.getElementById('login-btn').disabled = true;
-        }
-        updateLockoutUI();
-        pi.focus();
-    }
-}
-
-function populateDashboard() {
-    const ri = document.getElementById('reel-url-input');
-    if (ri) ri.value = appData.reelUrl;
-    renderAdminList();
-    clearExportMsg();
-}
-
-function renderAdminList() {
-    const list = document.getElementById('admin-port-list');
+/* ================================================
+   SOCIAL LINKS ADMIN
+   ================================================ */
+function renderSocialAdmin() {
+    var list = document.getElementById("social-admin-list");
     if (!list) return;
-    list.innerHTML = '';
-    appData.portfolio.forEach((id, idx) => {
-        const safeId = id.replace(/[^A-Za-z0-9_\-]/g, '');
-        const row = document.createElement('div');
-        row.className = 'admin-row';
-        row.innerHTML = `
-            <span class="admin-num">${idx + 1}</span>
-            <img src="https://img.youtube.com/vi/${safeId}/mqdefault.jpg" class="admin-thumb" loading="lazy" alt="">
-            <span class="admin-id" title="${safeId}">${safeId}</span>
-            <div class="admin-actions">
-                <button class="abtn" onclick="moveItem(${idx},-1)" ${idx===0?'disabled':''} aria-label="ขึ้น">↑</button>
-                <button class="abtn" onclick="moveItem(${idx},1)" ${idx===appData.portfolio.length-1?'disabled':''} aria-label="ลง">↓</button>
-                <button class="abtn del" onclick="deleteItem(${idx})" aria-label="ลบ">✕</button>
-            </div>
-        `;
+    var socials = appData.profile.socials || [];
+    list.innerHTML = "";
+    socials.forEach(function(s, idx) {
+        var row = document.createElement("div");
+        row.className = "social-admin-row";
+        row.innerHTML =
+            "<input class=\"social-label-input\" type=\"text\" placeholder=\"ชื่อ เช่น Instagram\" value=\"" + escHtml(s.label) + "\" data-idx=\"" + idx + "\" data-field=\"label\">" +
+            "<input class=\"social-url-input\" type=\"text\" placeholder=\"https://...\" value=\"" + escHtml(s.url) + "\" data-idx=\"" + idx + "\" data-field=\"url\">" +
+            "<div class=\"admin-actions\">" +
+              "<button class=\"abtn\" data-smove=\"" + idx + "\" data-dir=\"-1\"" + (idx===0?" disabled":"") + ">↑</button>" +
+              "<button class=\"abtn\" data-smove=\"" + idx + "\" data-dir=\"1\"" + (idx===socials.length-1?" disabled":"") + ">↓</button>" +
+              "<button class=\"abtn del\" data-sdel=\"" + idx + "\">✕</button>" +
+            "</div>";
         list.appendChild(row);
     });
 }
 
+function escHtml(s) {
+    return (s || "").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+}
+
+function syncSocialsFromInputs() {
+    var inputs = document.querySelectorAll("#social-admin-list input");
+    var map = {};
+    inputs.forEach(function(inp) {
+        var idx = inp.getAttribute("data-idx");
+        var field = inp.getAttribute("data-field");
+        if (!map[idx]) map[idx] = { label: "", url: "" };
+        map[idx][field] = inp.value.trim();
+    });
+    appData.profile.socials = Object.keys(map).sort(function(a,b){return a-b;}).map(function(k){ return map[k]; });
+}
+
+function initSocialAdmin() {
+    var list = document.getElementById("social-admin-list");
+    if (!list) return;
+
+    // live sync inputs → appData on every keystroke
+    list.addEventListener("input", function(e) {
+        if (e.target.matches(".social-label-input, .social-url-input")) {
+            syncSocialsFromInputs();
+            renderAbout();
+            saveToLocal();
+        }
+    });
+
+    // move / delete via delegation
+    list.addEventListener("click", function(e) {
+        var btn = e.target.closest("button");
+        if (!btn) return;
+        syncSocialsFromInputs(); // sync before mutating
+        var smove = btn.getAttribute("data-smove");
+        var sdel  = btn.getAttribute("data-sdel");
+        var dir   = btn.getAttribute("data-dir");
+        if (sdel !== null) {
+            appData.profile.socials.splice(parseInt(sdel,10), 1);
+        }
+        if (smove !== null) {
+            var i = parseInt(smove,10), ni = i + parseInt(dir,10);
+            var arr = appData.profile.socials;
+            if (ni >= 0 && ni < arr.length) {
+                var tmp = arr[i]; arr[i] = arr[ni]; arr[ni] = tmp;
+            }
+        }
+        renderSocialAdmin();
+        renderAbout();
+        saveToLocal();
+        setAdminStatus("\u0e21\u0e35\u0e01\u0e32\u0e23\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e41\u0e1b\u0e25\u0e07 \u2014 \u0e2d\u0e22\u0e48\u0e32\u0e25\u0e37\u0e21 Export JSON");
+    });
+
+    // Add new button
+    var addBtn = document.getElementById("add-social-btn");
+    if (addBtn) {
+        addBtn.addEventListener("click", function() {
+            if (!appData.profile.socials) appData.profile.socials = [];
+            appData.profile.socials.push({ label: "", url: "" });
+            renderSocialAdmin();
+            // focus last label input
+            var inputs = list.querySelectorAll(".social-label-input");
+            if (inputs.length) inputs[inputs.length-1].focus();
+            saveToLocal();
+            setAdminStatus("\u0e21\u0e35\u0e01\u0e32\u0e23\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e41\u0e1b\u0e25\u0e07 \u2014 \u0e2d\u0e22\u0e48\u0e32\u0e25\u0e37\u0e21 Export JSON");
+        });
+    }
+}
+
+function populateDashboard() {
+    setVal("reel-url-input",     appData.reelUrl || "");
+    setVal("reel-year-input",    appData.profile.reelYear || "");
+    setVal("reel-caption-input", appData.profile.reelCaption || "");
+    renderAdminList();
+    var p = appData.profile;
+    setVal("p-name-en", p.nameEN  || "");
+    setVal("p-name-th", p.nameTH  || "");
+    setVal("p-role",    p.role    || "");
+    setVal("p-email",   p.email   || "");
+    renderSocialAdmin();
+    var bioEl = document.getElementById("p-bio");
+    if (bioEl) bioEl.value = p.bio || "";
+    setVal("p-skills", (p.skills || []).join(", "));
+    setAdminStatus("");
+}
+
+function renderAdminList() {
+    var list = document.getElementById("admin-port-list");
+    if (!list) return;
+    list.innerHTML = "";
+    var total = (appData.portfolio || []).length;
+    appData.portfolio.forEach(function(id, idx){
+        var safeId = id.replace(/[^A-Za-z0-9_\-]/g,"");
+        var row = document.createElement("div");
+        row.className = "admin-row";
+        row.innerHTML =
+            "<span class=\"admin-num\">" + (idx+1) + "</span>" +
+            "<img src=\"https://img.youtube.com/vi/" + safeId + "/mqdefault.jpg\" class=\"admin-thumb\" loading=\"lazy\" alt=\"\">" +
+            "<span class=\"admin-id\" title=\"" + safeId + "\">" + safeId + "</span>" +
+            "<div class=\"admin-actions\">" +
+              "<button class=\"abtn\" data-move=\"" + idx + "\" data-dir=\"-1\"" + (idx===0?" disabled":"") + " aria-label=\"up\">&#8593;</button>" +
+              "<button class=\"abtn\" data-move=\"" + idx + "\" data-dir=\"1\""  + (idx===total-1?" disabled":"") + " aria-label=\"down\">&#8595;</button>" +
+              "<button class=\"abtn del\" data-del=\"" + idx + "\" aria-label=\"delete\">&#x2715;</button>" +
+            "</div>";
+        list.appendChild(row);
+    });
+    // update count
+    var countEl = document.getElementById("portfolio-count");
+    if (countEl) countEl.textContent = total + " videos";
+    // update admin section title with count
+    var title = list.previousElementSibling;
+}
+
+/* ---- Reel ---- */
 function applyReelUrl() {
-    const input = document.getElementById('reel-url-input');
-    if (!input) return;
-    const v = input.value.trim();
+    var v = getVal("reel-url-input");
     if (!v) return;
-    if (!/^https:\/\//i.test(v)) {
-        showAdminMsg('reel-msg', 'URL ต้องขึ้นต้นด้วย https://', 'error'); return;
-    }
+    if (!/^https:\/\//i.test(v)) { showMsg("reel-msg","URL ต้องขึ้นต้นด้วย https://","error"); return; }
     appData.reelUrl = v;
-    showAdminMsg('reel-msg', 'อัปเดตแล้ว (อย่าลืม Export)', 'ok');
+    appData.profile.reelYear    = getVal("reel-year-input")    || appData.profile.reelYear;
+    appData.profile.reelCaption = getVal("reel-caption-input") || appData.profile.reelCaption;
+    renderReel();
+    // re-apply lazy src
+    var iframe = document.getElementById("reel-iframe");
+    if (iframe) { iframe.setAttribute("data-src", v); iframe.src = v; }
+    saveToLocal();
+    showMsg("reel-msg","&#10003; \u0e2d\u0e31\u0e1b\u0e40\u0e14\u0e15\u0e41\u0e25\u0e49\u0e27","ok");
+    setAdminStatus("\u0e21\u0e35\u0e01\u0e32\u0e23\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e41\u0e1b\u0e25\u0e07 \u2014 \u0e2d\u0e22\u0e48\u0e32\u0e25\u0e37\u0e21 Export JSON");
 }
 
+/* ---- Portfolio ---- */
 function addPortItem() {
-    const input = document.getElementById('new-yt-input');
-    if (!input) return;
-    const raw = input.value.trim();
-    let ytId = raw;
-    const m = raw.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_\-]{11})/);
+    var raw = getVal("new-yt-input"), ytId = raw;
+    var m = raw.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_\-]{11})/);
     if (m) ytId = m[1];
-    if (!/^[A-Za-z0-9_\-]{11}$/.test(ytId)) {
-        showAdminMsg('add-msg', 'YouTube ID ไม่ถูกต้อง', 'error'); return;
-    }
-    if (appData.portfolio.includes(ytId)) {
-        showAdminMsg('add-msg', 'วิดีโอนี้มีอยู่แล้ว', 'error'); return;
-    }
+    if (!/^[A-Za-z0-9_\-]{11}$/.test(ytId)) { showMsg("add-msg","YouTube ID \u0e44\u0e21\u0e48\u0e16\u0e39\u0e01\u0e15\u0e49\u0e2d\u0e07","error"); return; }
+    if (appData.portfolio.indexOf(ytId) !== -1) { showMsg("add-msg","\u0e27\u0e34\u0e14\u0e35\u0e42\u0e2d\u0e19\u0e35\u0e49\u0e21\u0e35\u0e2d\u0e22\u0e39\u0e48\u0e41\u0e25\u0e49\u0e27","error"); return; }
     appData.portfolio.push(ytId);
-    input.value = '';
-    renderAdminList();
-    showAdminMsg('add-msg', 'เพิ่มแล้ว (อย่าลืม Export)', 'ok');
+    setVal("new-yt-input","");
+    renderAdminList(); renderPortfolio();
+    saveToLocal();
+    showMsg("add-msg","&#10003; \u0e40\u0e1e\u0e34\u0e48\u0e21\u0e41\u0e25\u0e49\u0e27","ok");
+    setAdminStatus("\u0e21\u0e35\u0e01\u0e32\u0e23\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e41\u0e1b\u0e25\u0e07 \u2014 \u0e2d\u0e22\u0e48\u0e32\u0e25\u0e37\u0e21 Export JSON");
 }
-
 function deleteItem(idx) {
-    if (!confirm(`ลบวิดีโอที่ ${idx+1} ออก?`)) return;
-    appData.portfolio.splice(idx, 1);
-    renderAdminList();
-    showAdminMsg('add-msg', 'ลบแล้ว (อย่าลืม Export)', 'ok');
+    if (!confirm("\u0e25\u0e1a\u0e27\u0e34\u0e14\u0e35\u0e42\u0e2d\u0e17\u0e35\u0e48 "+(idx+1)+" \u0e2d\u0e2d\u0e01?")) return;
+    appData.portfolio.splice(idx,1);
+    renderAdminList(); renderPortfolio();
+    saveToLocal();
+    showMsg("add-msg","&#10003; \u0e25\u0e1a\u0e41\u0e25\u0e49\u0e27","ok");
+    setAdminStatus("\u0e21\u0e35\u0e01\u0e32\u0e23\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e41\u0e1b\u0e25\u0e07 \u2014 \u0e2d\u0e22\u0e48\u0e32\u0e25\u0e37\u0e21 Export JSON");
 }
-
 function moveItem(idx, dir) {
-    const a = appData.portfolio;
-    const ni = idx + dir;
+    var a = appData.portfolio, ni = idx+dir;
     if (ni < 0 || ni >= a.length) return;
-    [a[idx], a[ni]] = [a[ni], a[idx]];
-    renderAdminList();
+    var tmp = a[idx]; a[idx] = a[ni]; a[ni] = tmp;
+    renderAdminList(); renderPortfolio();
+    saveToLocal();
+    setAdminStatus("\u0e21\u0e35\u0e01\u0e32\u0e23\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e41\u0e1b\u0e25\u0e07 \u2014 \u0e2d\u0e22\u0e48\u0e32\u0e25\u0e37\u0e21 Export JSON");
 }
 
-function showAdminMsg(id, text, type) {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.textContent = text;
-    el.style.color = type === 'error' ? '#f28b82' : '#c8f250';
-    clearTimeout(el._t);
-    el._t = setTimeout(() => { el.textContent = ''; }, 3000);
+/* ---- Profile ---- */
+function applyProfile() {
+    appData.profile.nameEN  = getVal("p-name-en");
+    appData.profile.nameTH  = getVal("p-name-th");
+    appData.profile.role    = getVal("p-role");
+    appData.profile.email   = getVal("p-email");
+    // socials saved via renderSocialAdmin live — already in appData.profile.socials
+    var bioEl = document.getElementById("p-bio");
+    appData.profile.bio = bioEl ? bioEl.value : "";
+    appData.profile.skills = getVal("p-skills").split(",").map(function(s){ return s.trim(); }).filter(Boolean);
+    renderHeader(); renderAbout(); renderFooter();
+    saveToLocal();
+    showMsg("profile-msg","&#10003; \u0e1a\u0e31\u0e19\u0e17\u0e36\u0e01\u0e41\u0e25\u0e49\u0e27","ok");
+    setAdminStatus("\u0e21\u0e35\u0e01\u0e32\u0e23\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e41\u0e1b\u0e25\u0e07 \u2014 \u0e2d\u0e22\u0e48\u0e32\u0e25\u0e37\u0e21 Export JSON");
 }
 
-function clearExportMsg() {
-    const el = document.getElementById('export-msg');
-    if (el) el.textContent = '';
+/* ---- Admin tabs ---- */
+function switchAdminTab(el, tabId) {
+    document.querySelectorAll(".atab").forEach(function(t){ t.classList.remove("active"); });
+    document.querySelectorAll(".admin-tab-content").forEach(function(t){ t.style.display="none"; });
+    el.classList.add("active");
+    var tab = document.getElementById(tabId);
+    if (tab) tab.style.display = "block";
 }
 
 /* ================================================
-   EXPORT — generate new script.js and download it
+   JSON EXPORT / IMPORT
    ================================================ */
-function exportScript() {
-    /* Fetch the current script.js source text */
-    fetch('script.js')
-        .then(r => {
-            if (!r.ok) throw new Error('fetch failed');
-            return r.text();
-        })
-        .then(source => {
-            const newSource = rebuildSource(source);
-            downloadFile('script.js', newSource);
-            showAdminMsg('export-msg', '✓ script.js ดาวน์โหลดแล้ว — นำไปแทนที่ไฟล์เดิมแล้ว push GitHub', 'ok');
-        })
-        .catch(() => {
-            /* Fallback: build from scratch if fetch fails (e.g. opened as file://) */
-            const newSource = buildScriptFromScratch();
-            downloadFile('script.js', newSource);
-            showAdminMsg('export-msg', '✓ script.js ดาวน์โหลดแล้ว — นำไปแทนที่ไฟล์เดิมแล้ว push GitHub', 'ok');
-        });
+function exportJSON() {
+    // Store current theme choice in data
+    appData.theme   = currentTheme;
+    appData.themeBg = currentBg;
+    var json = JSON.stringify(appData, null, 4);
+    var blob = new Blob([json], {type:"application/json"});
+    var url  = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = "data.json";
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+    showMsg("export-msg","&#10003; data.json \u0e14\u0e32\u0e27\u0e19\u0e4c\u0e42\u0e2b\u0e25\u0e14\u0e41\u0e25\u0e49\u0e27 \u2014 \u0e19\u0e33\u0e44\u0e1b\u0e41\u0e17\u0e19\u0e17\u0e35\u0e48\u0e44\u0e1f\u0e25\u0e4c\u0e40\u0e14\u0e34\u0e21\u0e41\u0e25\u0e49\u0e27 push GitHub","ok");
+    hasUnsaved = false;
+    setAdminStatusRaw("\u2713 Export \u0e40\u0e23\u0e35\u0e22\u0e1a\u0e23\u0e49\u0e2d\u0e22");
 }
 
-/* Replace ONLY the PORTFOLIO_DATA block inside the source */
-function rebuildSource(source) {
-    const dataBlock = `const PORTFOLIO_DATA = ${JSON.stringify(appData, null, 4)};`;
-    return source.replace(
-        /const PORTFOLIO_DATA = \{[\s\S]*?\};/,
-        dataBlock
-    );
+function importJSON(file) {
+    if (!file) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+        try {
+            var parsed = JSON.parse(e.target.result);
+            if (!parsed.portfolio || !parsed.profile) throw new Error("invalid");
+            appData = parsed;
+            // apply theme from imported file
+            if (parsed.theme)   currentTheme = parsed.theme;
+            if (parsed.themeBg) currentBg    = parsed.themeBg;
+            applyTheme(currentTheme, currentBg);
+            renderAll(); populateDashboard();
+            buildSwatches("admin-theme-swatches"); syncSwatchUI();
+            saveToLocal();
+            showMsg("import-msg","&#10003; \u0e42\u0e2b\u0e25\u0e14\u0e02\u0e49\u0e2d\u0e21\u0e39\u0e25\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08 \u2014 \u0e2b\u0e19\u0e49\u0e32\u0e40\u0e27\u0e47\u0e1a\u0e2d\u0e31\u0e1b\u0e40\u0e14\u0e15\u0e41\u0e25\u0e49\u0e27","ok");
+            setAdminStatus("");
+        } catch(e) {
+            showMsg("import-msg","\u0e44\u0e1f\u0e25\u0e4c\u0e44\u0e21\u0e48\u0e16\u0e39\u0e01\u0e15\u0e49\u0e2d\u0e07 \u2014 \u0e15\u0e49\u0e2d\u0e07\u0e40\u0e1b\u0e47\u0e19 data.json \u0e17\u0e35\u0e48 export \u0e21\u0e32\u0e08\u0e32\u0e01\u0e23\u0e30\u0e1a\u0e1a\u0e19\u0e35\u0e49","error");
+        }
+    };
+    reader.readAsText(file);
 }
 
-/* Full fallback builder — writes complete script.js from template */
-function buildScriptFromScratch() {
-    return getCurrentScriptContent().replace(
-        /const PORTFOLIO_DATA = \{[\s\S]*?\};/,
-        `const PORTFOLIO_DATA = ${JSON.stringify(appData, null, 4)};`
-    );
-}
-
-function getCurrentScriptContent() {
-    /* Read from the actual loaded script tag */
-    const scripts = document.querySelectorAll('script[src="script.js"]');
-    if (scripts.length) {
-        /* Can't read inline from tag — rely on fetch path */
+/* ================================================
+   HELPERS
+   ================================================ */
+function setText(id,val)  { var el=document.getElementById(id); if(el) el.textContent=val; }
+function setVal(id,val)   { var el=document.getElementById(id); if(el) el.value=val; }
+function getVal(id)       { var el=document.getElementById(id); return el?el.value.trim():""; }
+function setAdminStatus(m){
+    var el=document.getElementById("admin-status");
+    if(el) {
+        el.textContent = m;
+        if (m) {
+            el.style.color = "var(--accent)";
+            hasUnsaved = true;
+        }
     }
-    /* Return a minimal valid fallback template */
-    return `/* RACHAPON THATPRASERT — Portfolio Script */\n\nconst PORTFOLIO_DATA = ${JSON.stringify(PORTFOLIO_DATA, null, 4)};\n\n/* [Full script was not available for rebuild. Please use the fetch-based export.] */\n`;
 }
-
-function downloadFile(filename, text) {
-    const blob = new Blob([text], { type: 'text/javascript' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href     = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+function clearUnsaved() {
+    hasUnsaved = false;
+    setAdminStatusRaw("");
 }
-
-async function changePassword() {
-    const cur = document.getElementById('cp-current').value;
-    const nw  = document.getElementById('cp-new').value;
-    const nw2 = document.getElementById('cp-new2').value;
-    const msg = document.getElementById('cp-msg');
-    if (!cur||!nw||!nw2) { showAdminMsg('cp-msg','กรอกให้ครบ','error'); return; }
-    if (nw !== nw2)       { showAdminMsg('cp-msg','รหัสผ่านใหม่ไม่ตรงกัน','error'); return; }
-    if (nw.length < 8)    { showAdminMsg('cp-msg','ต้องมีอย่างน้อย 8 ตัวอักษร','error'); return; }
-    const curHash = await sha256(cur);
-    const stored  = await getStoredHash();
-    if (curHash !== stored) { showAdminMsg('cp-msg','รหัสผ่านปัจจุบันไม่ถูกต้อง','error'); return; }
-    /* Save new hash to sessionStorage for this session only */
-    sessionStorage.setItem(ADMIN_PASS_HASH_KEY, await sha256(nw));
-    clearLockout();
-    ['cp-current','cp-new','cp-new2'].forEach(id => { document.getElementById(id).value = ''; });
-    showAdminMsg('cp-msg','เปลี่ยนรหัสผ่านในเซสชันนี้แล้ว ✓\n(เปลี่ยนถาวร: แก้ DEFAULT_PASS ใน script.js)','ok');
+function setAdminStatusRaw(m){
+    var el=document.getElementById("admin-status");
+    if(el){ el.textContent=m; }
 }
-
-/* Enter key on login */
-document.addEventListener('keydown', e => {
-    if (e.key !== 'Enter') return;
-    const lv = document.getElementById('login-view');
-    if (lv && lv.style.display !== 'none') adminLogin();
-});
+function showMsg(id,text,type) {
+    var el=document.getElementById(id); if(!el) return;
+    el.innerHTML = text;
+    el.style.color = type==="error"?"#f28b82":"var(--accent)";
+    clearTimeout(el._t);
+    el._t = setTimeout(function(){ el.textContent=""; },4000);
+}
 
 /* ================================================
    INIT
    ================================================ */
-document.addEventListener('DOMContentLoaded', () => {
-    const yr = document.getElementById('year');
+document.addEventListener("DOMContentLoaded", async function() {
+
+    // Year
+    var yr = document.getElementById("year");
     if (yr) yr.textContent = new Date().getFullYear();
 
-    document.querySelectorAll('.page').forEach((p, i) => {
-        if (i === 0) { p.classList.add('active'); p.hidden = false; }
-        else p.hidden = true;
+    // Load data → render
+    await loadData();
+
+    // Init theme BEFORE render so accent color is set
+    initThemePicker();
+    renderAll();
+
+    // Page state
+    document.querySelectorAll(".page").forEach(function(p, i){
+        if (i === 0) { p.classList.add("active"); p.hidden = false; }
+        else         { p.classList.remove("active"); p.hidden = true; }
+    });
+    // Lazy-load reel on first view
+    lazyLoadReel();
+
+    // Nav
+    document.querySelectorAll(".nav-btn[data-page]").forEach(function(btn){
+        btn.addEventListener("click", function(){
+            switchPage(btn.getAttribute("data-page"), btn);
+        });
     });
 
-    renderReel();
-    renderPortfolio();
-    getStoredHash();
+    // Modal
+    var mc = document.getElementById("modal-close-btn");
+    var mb = document.getElementById("modal-backdrop");
+    if (mc) mc.addEventListener("click", closeModal);
+    if (mb) mb.addEventListener("click", closeModal);
+
+    // Admin wiring
+    var ac = document.getElementById("admin-close-btn");
+    var ab = document.getElementById("admin-backdrop");
+    if (ac) ac.addEventListener("click", closeAdmin);
+    if (ab) ab.addEventListener("click", closeAdmin);
+
+    var ar  = document.getElementById("apply-reel-btn");    if(ar)  ar.addEventListener("click", applyReelUrl);
+    var apb = document.getElementById("add-port-btn");      if(apb) apb.addEventListener("click", addPortItem);
+    var apf = document.getElementById("apply-profile-btn"); if(apf) apf.addEventListener("click", applyProfile);
+    var ex  = document.getElementById("export-json-btn");   if(ex)  ex.addEventListener("click", exportJSON);
+    var im  = document.getElementById("import-json-file");
+    if (im) im.addEventListener("change", function(e){ importJSON(e.target.files[0]); e.target.value=""; });
+
+    // Admin tabs
+    document.querySelectorAll(".atab").forEach(function(btn){
+        btn.addEventListener("click", function(){ switchAdminTab(btn, btn.getAttribute("data-tab")); });
+    });
+
+    initSocialAdmin();
+
+    // Portfolio list events
+    var pl = document.getElementById("admin-port-list");
+    if (pl) pl.addEventListener("click", function(e){
+        var btn = e.target.closest("button"); if(!btn) return;
+        var del  = btn.getAttribute("data-del");
+        var move = btn.getAttribute("data-move");
+        var dir  = btn.getAttribute("data-dir");
+        if (del  !== null) deleteItem(parseInt(del, 10));
+        if (move !== null) moveItem(parseInt(move,10), parseInt(dir,10));
+    });
+
+    // Escape key
+    document.addEventListener("keydown", function(e){
+        if (e.key !== "Escape") return;
+        var vm = document.getElementById("video-modal");
+        if (vm && !vm.hidden) closeModal();
+        var adm = document.getElementById("admin-panel");
+        if (adm && !adm.hidden) closeAdmin();
+
+    });
+
+    // Block iframe embedding
+    if (window.self !== window.top) {
+        document.documentElement.style.display = "none";
+        window.top.location = window.self.location;
+    }
 });
