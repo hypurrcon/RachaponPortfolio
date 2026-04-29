@@ -4,8 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio — 3D Animator</title>
-    <meta name="description" content="3D Animation Portfolio — Character animation and motion.">
+    <meta name="description" id="meta-desc" content="3D Animation Portfolio — Character animation and motion.">
     <meta name="robots" content="index, follow">
+    <meta property="og:title" id="og-title" content="Portfolio — 3D Animator">
+    <meta property="og:description" id="og-desc" content="3D Animation Portfolio — Character animation and motion.">
+    <meta property="og:image" content="https://www.rachaponthat-portfolio.com/img/profile.jpg">
+    <meta property="og:image:alt" content="3D Animator Portfolio">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.rachaponthat-portfolio.com/">
+    <meta property="og:locale" content="th_TH">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" id="tw-title" content="Portfolio — 3D Animator">
+    <meta name="twitter:description" id="tw-desc" content="3D Animation Portfolio — Character animation and motion.">
+    <meta name="twitter:image" content="https://www.rachaponthat-portfolio.com/img/profile.jpg">
     <link rel="icon" href="img/ParkS-Size.png" type="image/png">
     <link rel="apple-touch-icon" href="img/ParkS-Size.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,7 +48,7 @@
     <nav class="tab-nav" role="navigation" aria-label="Main navigation">
         <button class="nav-btn active" data-page="reels" aria-selected="true" role="tab">Reels</button>
         <button class="nav-btn" data-page="portfolio" aria-selected="false" role="tab">Portfolio</button>
-        <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="nav-btn nav-link" aria-label="Download Resume">Resume</a>
+        <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="nav-btn nav-link" aria-label="Download Resume (opens PDF)">Resume <span class="nav-external" aria-hidden="true">↗</span></a>
         <button class="nav-btn" data-page="about" aria-selected="false" role="tab">About</button>
     </nav>
 
@@ -169,6 +180,10 @@
                 <div class="admin-field">
                     <label for="new-yt-input">YouTube URL หรือ ID</label>
                     <input type="text" id="new-yt-input" placeholder="https://youtube.com/watch?v=XXXXXXXXXXX">
+                </div>
+                <div class="admin-field">
+                    <label for="new-title-input">ชื่อผลงาน (แสดงตอน hover)</label>
+                    <input type="text" id="new-title-input" placeholder="เช่น Body Mechanics — Walk Cycle">
                 </div>
                 <div class="admin-row-btn">
                     <button class="admin-primary-btn" id="add-port-btn">+ เพิ่ม</button>

@@ -193,6 +193,12 @@ async function loadData() {
             appData = JSON.parse(JSON.stringify(FALLBACK_DATA));
         }
     }
+    // Migrate old string portfolio entries → {id, title} objects
+    if (Array.isArray(appData.portfolio)) {
+        appData.portfolio = appData.portfolio.map(function(item){
+            return typeof item === "string" ? { id: item, title: "" } : item;
+        });
+    }
     // Migrate old youtube/tiktok fields → socials array
     if (appData.profile && !appData.profile.socials) {
         appData.profile.socials = [];
@@ -226,7 +232,14 @@ function renderHeader() {
     var p = appData.profile;
     setText("header-name", p.nameEN || "—");
     setText("header-role", p.role   || "");
-    document.title = (p.nameEN || "Portfolio") + " \u2014 3D Animator";
+    var title = (p.nameEN || "Portfolio") + " \u2014 3D Animator";
+    var desc  = (p.role || "3D Animator") + " portfolio \u2014 Character animation and motion.";
+    document.title = title;
+    setMeta("og-title",  title, "content");
+    setMeta("og-desc",   desc,  "content");
+    setMeta("tw-title",  title, "content");
+    setMeta("tw-desc",   desc,  "content");
+    setMeta("meta-desc", desc,  "content");
 }
 
 function renderReel() {
@@ -261,18 +274,22 @@ function renderPortfolio() {
     // Replace skeletons with real thumbnails after a tick
     requestAnimationFrame(function(){
         grid.innerHTML = "";
-        items.forEach(function(id, idx){
-            var safeId = id.replace(/[^A-Za-z0-9_\-]/g,"");
+        items.forEach(function(item, idx){
+            // support both old string format and new {id,title} format
+            var safeId = typeof item === "string" ? item.replace(/[^A-Za-z0-9_\-]/g,"") : (item.id||"").replace(/[^A-Za-z0-9_\-]/g,"");
+            var title  = typeof item === "object" && item.title ? item.title : "";
+            var label  = title || ("Portfolio " + (idx+1));
             var btn = document.createElement("button");
             btn.className = "port-item";
-            btn.setAttribute("aria-label", "Play Portfolio " + (idx+1));
+            btn.setAttribute("aria-label", "Play " + label);
             btn.setAttribute("role", "listitem");
-            btn.addEventListener("click", function(){ openModal(safeId, "Portfolio " + (idx+1)); });
+            btn.addEventListener("click", function(){ openModal(safeId, label); });
             btn.innerHTML =
                 "<img src=\"https://img.youtube.com/vi/" + safeId + "/hqdefault.jpg\"" +
-                " alt=\"Animation project " + (idx+1) + "\" class=\"port-thumb\" loading=\"lazy\">" +
+                " alt=\"" + label + "\" class=\"port-thumb\" loading=\"lazy\">" +
                 "<div class=\"port-overlay\" aria-hidden=\"true\">" +
                   "<span class=\"play-icon\">&#9654;</span>" +
+                  (title ? "<span class=\"port-hover-title\">" + title + "</span>" : "") +
                 "</div>" +
                 "<span class=\"port-num\">" + (idx+1) + "</span>";
             grid.appendChild(btn);
@@ -528,14 +545,21 @@ function renderAdminList() {
     if (!list) return;
     list.innerHTML = "";
     var total = (appData.portfolio || []).length;
-    appData.portfolio.forEach(function(id, idx){
-        var safeId = id.replace(/[^A-Za-z0-9_\-]/g,"");
+    appData.portfolio.forEach(function(item, idx){
+        var safeId = typeof item === "string" ? item.replace(/[^A-Za-z0-9_\-]/g,"") : (item.id||"").replace(/[^A-Za-z0-9_\-]/g,"");
         var row = document.createElement("div");
         row.className = "admin-row";
+        var itemTitle = typeof item === "object" && item.title ? item.title : "";
         row.innerHTML =
             "<span class=\"admin-num\">" + (idx+1) + "</span>" +
             "<img src=\"https://img.youtube.com/vi/" + safeId + "/mqdefault.jpg\" class=\"admin-thumb\" loading=\"lazy\" alt=\"\">" +
-            "<span class=\"admin-id\" title=\"" + safeId + "\">" + safeId + "</span>" +
+            "<div class=\"admin-id-wrap\">" +
+              "<span class=\"admin-id\" title=\"" + safeId + "\">" + safeId + "</span>" +
+              "<div style=\"display:flex;gap:4px;align-items:center;\">" +
+                "<input class=\"admin-title-input\" type=\"text\" placeholder=\"ชื่อผลงาน...\" value=\"" + itemTitle.replace(/"/g,"&quot;") + "\" data-idx=\"" + idx + "\">" +
+                "<button class=\"abtn fetch-title-btn\" data-fetch=\"" + idx + "\" data-ytid=\"" + safeId + "\" title=\"ดึงชื่อจาก YouTube\" style=\"flex-shrink:0;font-size:0.6rem;padding:0 5px;min-width:26px;\">YT</button>" +
+              "</div>" +
+            "</div>" +
             "<div class=\"admin-actions\">" +
               "<button class=\"abtn\" data-move=\"" + idx + "\" data-dir=\"-1\"" + (idx===0?" disabled":"") + " aria-label=\"up\">&#8593;</button>" +
               "<button class=\"abtn\" data-move=\"" + idx + "\" data-dir=\"1\""  + (idx===total-1?" disabled":"") + " aria-label=\"down\">&#8595;</button>" +
@@ -567,19 +591,48 @@ function applyReelUrl() {
     setAdminStatus("\u0e21\u0e35\u0e01\u0e32\u0e23\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e41\u0e1b\u0e25\u0e07 \u2014 \u0e2d\u0e22\u0e48\u0e32\u0e25\u0e37\u0e21 Export JSON");
 }
 
+
+/* ================================================
+   AUTO-FETCH YouTube title via oEmbed
+   ================================================ */
+function fetchYouTubeTitle(ytId, callback) {
+    var url = "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=" + ytId + "&format=json";
+    fetch(url)
+        .then(function(r){ return r.ok ? r.json() : null; })
+        .then(function(data){ callback(data && data.title ? data.title : ""); })
+        .catch(function(){ callback(""); });
+}
+
 /* ---- Portfolio ---- */
 function addPortItem() {
     var raw = getVal("new-yt-input"), ytId = raw;
     var m = raw.match(/(?:v=|youtu\.be\/|embed\/)([A-Za-z0-9_\-]{11})/);
     if (m) ytId = m[1];
     if (!/^[A-Za-z0-9_\-]{11}$/.test(ytId)) { showMsg("add-msg","YouTube ID \u0e44\u0e21\u0e48\u0e16\u0e39\u0e01\u0e15\u0e49\u0e2d\u0e07","error"); return; }
-    if (appData.portfolio.indexOf(ytId) !== -1) { showMsg("add-msg","\u0e27\u0e34\u0e14\u0e35\u0e42\u0e2d\u0e19\u0e35\u0e49\u0e21\u0e35\u0e2d\u0e22\u0e39\u0e48\u0e41\u0e25\u0e49\u0e27","error"); return; }
-    appData.portfolio.push(ytId);
+    if (appData.portfolio.some(function(x){ return (typeof x==="string"?x:x.id)===ytId; })) { showMsg("add-msg","\u0e27\u0e34\u0e14\u0e35\u0e42\u0e2d\u0e19\u0e35\u0e49\u0e21\u0e35\u0e2d\u0e22\u0e39\u0e48\u0e41\u0e25\u0e49\u0e27","error"); return; }
+    var manualTitle = getVal("new-title-input");
+    // Push immediately with manual title (or empty), then fetch YT title if blank
+    appData.portfolio.push({ id: ytId, title: manualTitle });
     setVal("new-yt-input","");
+    setVal("new-title-input","");
     renderAdminList(); renderPortfolio();
     saveToLocal();
     showMsg("add-msg","&#10003; \u0e40\u0e1e\u0e34\u0e48\u0e21\u0e41\u0e25\u0e49\u0e27","ok");
     setAdminStatus("\u0e21\u0e35\u0e01\u0e32\u0e23\u0e40\u0e1b\u0e25\u0e35\u0e48\u0e22\u0e19\u0e41\u0e1b\u0e25\u0e07 \u2014 \u0e2d\u0e22\u0e48\u0e32\u0e25\u0e37\u0e21 Export JSON");
+    // Auto-fetch YouTube title if no manual title given
+    if (!manualTitle) {
+        var newIdx = appData.portfolio.length - 1;
+        showMsg("add-msg","\u0e01\u0e33\u0e25\u0e31\u0e07\u0e14\u0e36\u0e07\u0e0a\u0e37\u0e48\u0e2d...","ok");
+        fetchYouTubeTitle(ytId, function(fetchedTitle) {
+            if (fetchedTitle && appData.portfolio[newIdx]) {
+                appData.portfolio[newIdx].title = fetchedTitle;
+                renderAdminList();
+                renderPortfolio();
+                saveToLocal();
+                showMsg("add-msg","&#10003; \u0e14\u0e36\u0e07\u0e0a\u0e37\u0e48\u0e2d\u0e2a\u0e33\u0e40\u0e23\u0e47\u0e08: " + fetchedTitle,"ok");
+            }
+        });
+    }
 }
 function deleteItem(idx) {
     if (!confirm("\u0e25\u0e1a\u0e27\u0e34\u0e14\u0e35\u0e42\u0e2d\u0e17\u0e35\u0e48 "+(idx+1)+" \u0e2d\u0e2d\u0e01?")) return;
@@ -670,6 +723,7 @@ function importJSON(file) {
    HELPERS
    ================================================ */
 function setText(id,val)  { var el=document.getElementById(id); if(el) el.textContent=val; }
+function setMeta(id,val,attr) { var el=document.getElementById(id); if(el) el.setAttribute(attr||"content",val); }
 function setVal(id,val)   { var el=document.getElementById(id); if(el) el.value=val; }
 function getVal(id)       { var el=document.getElementById(id); return el?el.value.trim():""; }
 function setAdminStatus(m){
@@ -757,14 +811,48 @@ document.addEventListener("DOMContentLoaded", async function() {
 
     // Portfolio list events
     var pl = document.getElementById("admin-port-list");
-    if (pl) pl.addEventListener("click", function(e){
-        var btn = e.target.closest("button"); if(!btn) return;
-        var del  = btn.getAttribute("data-del");
-        var move = btn.getAttribute("data-move");
-        var dir  = btn.getAttribute("data-dir");
-        if (del  !== null) deleteItem(parseInt(del, 10));
-        if (move !== null) moveItem(parseInt(move,10), parseInt(dir,10));
-    });
+    if (pl) {
+        pl.addEventListener("click", function(e){
+            var btn = e.target.closest("button"); if(!btn) return;
+            var del   = btn.getAttribute("data-del");
+            var move  = btn.getAttribute("data-move");
+            var dir   = btn.getAttribute("data-dir");
+            var fetch = btn.getAttribute("data-fetch");
+            var ytid  = btn.getAttribute("data-ytid");
+            if (del   !== null) deleteItem(parseInt(del, 10));
+            if (move  !== null) moveItem(parseInt(move,10), parseInt(dir,10));
+            if (fetch !== null && ytid) {
+                var fidx = parseInt(fetch, 10);
+                btn.textContent = "...";
+                btn.disabled = true;
+                fetchYouTubeTitle(ytid, function(t) {
+                    if (t && appData.portfolio[fidx]) {
+                        appData.portfolio[fidx].title = t;
+                        saveToLocal();
+                        renderAdminList();
+                        renderPortfolio();
+                    } else {
+                        btn.textContent = "YT";
+                        btn.disabled = false;
+                    }
+                });
+            }
+        });
+        // live-sync title inputs
+        pl.addEventListener("input", function(e){
+            if (!e.target.matches(".admin-title-input")) return;
+            var idx = parseInt(e.target.getAttribute("data-idx"), 10);
+            if (isNaN(idx)) return;
+            var item = appData.portfolio[idx];
+            if (typeof item === "string") {
+                appData.portfolio[idx] = { id: item, title: e.target.value };
+            } else if (item) {
+                item.title = e.target.value;
+            }
+            saveToLocal();
+            renderPortfolio();
+        });
+    }
 
     // Escape key
     document.addEventListener("keydown", function(e){
