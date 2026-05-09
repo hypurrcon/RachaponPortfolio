@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio — 3D Animator</title>
-    <meta name="description" id="meta-desc" content="3D Animation Portfolio — Character animation and motion.">
+    <title>Rachapon Thatprasert — 3D Animator</title>
+    <meta name="description" id="meta-desc" content="3D Animation portfolio — Character animation and motion.">
     <meta name="robots" content="index, follow">
-    <meta property="og:title" id="og-title" content="Portfolio — 3D Animator">
-    <meta property="og:description" id="og-desc" content="3D Animation Portfolio — Character animation and motion.">
+    <meta property="og:title" id="og-title" content="Rachapon Thatprasert — 3D Animator">
+    <meta property="og:description" id="og-desc" content="3D Animation portfolio — Character animation and motion.">
     <meta property="og:image" content="https://www.rachaponthat-portfolio.com/img/profile.jpg">
-    <meta property="og:image:alt" content="3D Animator Portfolio">
+    <meta property="og:image:alt" content="Rachapon Thatprasert - 3D Animator">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.rachaponthat-portfolio.com/">
     <meta property="og:locale" content="th_TH">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" id="tw-title" content="Portfolio — 3D Animator">
-    <meta name="twitter:description" id="tw-desc" content="3D Animation Portfolio — Character animation and motion.">
+    <meta name="twitter:title" id="tw-title" content="Rachapon Thatprasert — 3D Animator">
+    <meta name="twitter:description" id="tw-desc" content="3D Animation portfolio — Character animation and motion.">
     <meta name="twitter:image" content="https://www.rachaponthat-portfolio.com/img/profile.jpg">
     <link rel="icon" href="img/ParkS-Size.png" type="image/png">
     <link rel="apple-touch-icon" href="img/ParkS-Size.png">
@@ -26,16 +26,19 @@
 </head>
 <body>
 
+<div id="bg-img-layer" style="display:none;position:fixed;inset:0;background-size:cover;background-position:center;pointer-events:none;z-index:0;"></div>
+
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
 <header role="banner">
     <div class="header-inner">
         <div class="header-logo">
-            <img src="img/ParkS-Size.png" alt="Logo" class="logo-img">
+            <img src="img/ParkS-Size.png" alt="Logo" class="logo-img" id="header-logo1">
+            <img src="" alt="" class="logo-img" id="header-logo2" style="display:none;">
         </div>
         <div class="header-text">
-            <h1 class="site-title" id="header-name">—</h1>
-            <p class="site-sub" id="header-role">—</p>
+            <h1 class="site-title" id="header-name">Rachapon Thatprasert</h1>
+            <p class="site-sub" id="header-sub">3D Animator / Character Animation</p>
         </div>
         <div class="header-deco" aria-hidden="true">
             <img src="img/Emote.png" alt="" class="deco-img">
@@ -44,28 +47,26 @@
 </header>
 
 <div class="layout-shell" role="main" id="main-content">
-
     <nav class="tab-nav" role="navigation" aria-label="Main navigation">
-        <button class="nav-btn active" data-page="reels" aria-selected="true" role="tab">Reels</button>
-        <button class="nav-btn" data-page="portfolio" aria-selected="false" role="tab">Portfolio</button>
-        <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="nav-btn nav-link" aria-label="Download Resume (opens PDF)">Resume <span class="nav-external" aria-hidden="true">↗</span></a>
-        <button class="nav-btn" data-page="about" aria-selected="false" role="tab">About</button>
+        <button class="nav-btn active" onclick="switchPage('reels',this)" aria-selected="true" role="tab">Reels</button>
+        <button class="nav-btn" onclick="switchPage('portfolio',this)" aria-selected="false" role="tab">Portfolio</button>
+        <button class="nav-btn" onclick="openResume()">Resume <span class="nav-external" aria-hidden="true">↗</span></button>
+        <button class="nav-btn" onclick="switchPage('about',this)" aria-selected="false" role="tab">About</button>
     </nav>
 
     <!-- REELS -->
     <section id="reels" class="page active" role="tabpanel">
         <div class="reel-wrap">
             <div class="reel-header">
-                <span class="label-tag" id="reel-year-tag">Showreel</span>
-                <h2>3D Animation Reel</h2>
+                <span class="label-tag" id="reel-label">Showreel 2024</span>
+                <h2 id="reel-title">3D Animation Reel</h2>
             </div>
             <div class="video-frame">
                 <iframe id="reel-iframe" src="" width="100%" height="100%"
                     frameborder="0" allow="autoplay; fullscreen; picture-in-picture"
-                    allowfullscreen title="3D Animation Reel" loading="lazy">
-                </iframe>
+                    allowfullscreen title="3D Animation Reel" loading="lazy"></iframe>
             </div>
-            <p class="reel-caption" id="reel-caption-text">—</p>
+            <p class="reel-caption" id="reel-caption">Character animation · Body mechanics · Facial performance</p>
         </div>
     </section>
 
@@ -84,199 +85,298 @@
         <div class="about-wrap">
             <div class="about-left">
                 <div class="profile-ring">
-                    <img src="img/profile.jpg" alt="Profile photo" class="profile-img" id="about-photo">
+                    <img src="img/profile.jpg" alt="Rachapon Thatprasert" class="profile-img" id="about-profile-img">
                 </div>
                 <div class="contact-block">
-                    <a id="about-email-link" href="#" class="contact-link" aria-label="Send email">
+                    <a id="about-email-link" href="mailto:hypurr.con@gmail.com" class="contact-link" aria-label="Send email">
                         <span class="contact-icon" aria-hidden="true">✉</span>
-                        <span id="about-email-text">—</span>
+                        <span id="about-email-text">hypurr.con@gmail.com</span>
                     </a>
-                    <div class="social-row" id="social-row">
-                        <!-- populated by script.js -->
+                    <div class="social-row" id="about-socials">
+                        <!-- populated by JS -->
                     </div>
                 </div>
             </div>
             <div class="about-right">
                 <span class="label-tag">About Me</span>
-                <h2 class="about-name" id="about-name-th">—</h2>
+                <h2 class="about-name" id="about-name-th">รัชพล ทัศประเสริฐ</h2>
                 <div class="about-bio" id="about-bio"></div>
-                <div class="skills-list" id="skills-list" aria-label="Skills"></div>
-                <a href="resume.pdf" target="_blank" rel="noopener noreferrer" class="resume-cta">
+                <div class="skills-list" id="about-skills" aria-label="Skills"></div>
+                <button onclick="openResume()" class="resume-cta">
                     Download Resume <span aria-hidden="true">↗</span>
-                </a>
+                </button>
             </div>
         </div>
     </section>
-
 </div>
 
 <footer role="contentinfo">
-    <p class="footer-copy">&copy; <span id="year"></span> <span id="footer-name">—</span>. All rights reserved.</p>
-    <p class="footer-note">Designed &amp; built by <span id="footer-name2">—</span></p>
+    <p class="footer-copy">&copy; <span id="year"></span> <span id="footer-name">Rachapon Thatprasert</span>. All rights reserved.</p>
+    <p class="footer-note">Designed &amp; built by <span id="footer-name-2">Rachapon Thatprasert</span></p>
 </footer>
 
-<!-- Video Modal -->
-<div id="video-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
-    <div class="modal-backdrop" id="modal-backdrop"></div>
-    <div class="modal-box">
-        <div class="modal-top">
-            <span id="modal-title" class="modal-label">Now Playing</span>
-            <button class="modal-close" id="modal-close-btn" aria-label="Close video">&#x2715;</button>
+<!-- Lightbox (portfolio viewer — video + image + nav) -->
+<div id="lightbox" class="modal lightbox" role="dialog" aria-modal="true" aria-label="Portfolio viewer" hidden>
+    <div class="modal-backdrop" onclick="closeLightbox()"></div>
+    <div class="lightbox-box">
+        <div class="lightbox-top">
+            <span id="lightbox-title" class="modal-label"></span>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <span id="lightbox-counter" class="lightbox-counter"></span>
+                <button class="modal-close" onclick="closeLightbox()" aria-label="ปิด">&#x2715;</button>
+            </div>
         </div>
-        <div class="modal-video">
-            <iframe id="modal-iframe" src="" frameborder="0"
-                allow="autoplay; fullscreen; picture-in-picture"
-                allowfullscreen title="Portfolio video" loading="lazy">
-            </iframe>
+        <div class="lightbox-stage">
+            <button class="lb-nav lb-prev" id="lb-prev" onclick="lightboxNav(-1)" aria-label="ก่อนหน้า">&#8249;</button>
+            <div class="lightbox-content" id="lightbox-content"></div>
+            <button class="lb-nav lb-next" id="lb-next" onclick="lightboxNav(1)" aria-label="ถัดไป">&#8250;</button>
         </div>
     </div>
 </div>
 
-<!-- Admin Panel — type "admin" anywhere on page to open -->
-<div id="admin-panel" class="admin-overlay" role="dialog" aria-modal="true" aria-label="Admin Panel" hidden>
-    <div class="admin-backdrop" id="admin-backdrop"></div>
-    <div class="admin-box">
-
-        <div class="admin-header">
-            <span class="admin-logo">⚙ Admin Panel</span>
-            <button class="modal-close" id="admin-close-btn" aria-label="Close">&#x2715;</button>
+<!-- PDF / Resume Modal -->
+<div id="pdf-modal" class="modal" role="dialog" aria-modal="true" hidden>
+    <div class="modal-backdrop" onclick="closePdfModal()"></div>
+    <div class="modal-box pdf-modal-box">
+        <div class="modal-top">
+            <span class="modal-label">Resume</span>
+            <div style="display:flex;gap:8px;align-items:center;">
+                <button class="pdf-dl-btn" onclick="downloadPdf()">&#8595; Download</button>
+                <button class="modal-close" onclick="closePdfModal()" aria-label="Close">&#x2715;</button>
+            </div>
         </div>
+        <div class="pdf-viewer-wrap">
+            <iframe id="pdf-iframe" src="" title="Resume PDF" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
 
-        <div id="dashboard-view" style="display:none;">
-            <div class="admin-tabs">
-                <button class="atab active" data-tab="tab-reel">🎬 Reel</button>
-                <button class="atab" data-tab="tab-port">📁 Portfolio</button>
-                <button class="atab" data-tab="tab-profile">👤 Profile</button>
-                <button class="atab" data-tab="tab-theme">🎨 Theme</button>
-                <button class="atab" data-tab="tab-io">💾 JSON</button>
+<!-- Admin Panel -->
+<div id="admin-panel" class="admin-overlay" role="dialog" aria-modal="true" aria-label="Admin Panel" hidden>
+    <div class="admin-backdrop" onclick="closeAdmin()"></div>
+    <div class="admin-box">
+        <div class="admin-header">
+            <span class="admin-logo">&#9881; Admin Panel</span>
+            <button class="modal-close" onclick="closeAdmin()" aria-label="Close">&#x2715;</button>
+        </div>
+        <div style="padding:24px;">
+            <div class="admin-tabs" style="flex-wrap:wrap;">
+                <button class="atab active" onclick="adminTab(this,'tab-site')">&#127758; Site</button>
+                <button class="atab" onclick="adminTab(this,'tab-reel')">&#127916; Reel</button>
+                <button class="atab" onclick="adminTab(this,'tab-about')">&#128100; About</button>
+                <button class="atab" onclick="adminTab(this,'tab-port')">&#128193; Portfolio</button>
+                <button class="atab" onclick="adminTab(this,'tab-theme')">&#127756; Theme</button>
+                <button class="atab" onclick="adminTab(this,'tab-io')">&#128190; JSON</button>
             </div>
 
-            <!-- Reel tab -->
-            <div id="tab-reel" class="admin-tab-content">
-                <p class="admin-section-title">Reel URL</p>
-                <p class="admin-hint">วาง Vimeo embed URL หรือ link ที่ embed ได้</p>
+            <!-- SITE -->
+            <div id="tab-site" class="admin-tab-content" style="display:block;">
+                <p class="admin-section-title">ข้อมูลเว็บไซต์</p>
+                <div class="admin-field"><label>ชื่อ (EN)</label><input type="text" id="f-site-title" placeholder="Rachapon Thatprasert"></div>
+                <div class="admin-field"><label>Subtitle / Role</label><input type="text" id="f-site-subtitle" placeholder="3D Animator / Character Animation"></div>
+                <div class="admin-field"><label>URL เว็บไซต์</label><input type="text" id="f-site-url" placeholder="https://yoursite.com"></div>
+                <p class="admin-section-title" style="margin-top:20px;">Logo & Favicon</p>
                 <div class="admin-field">
-                    <label for="reel-url-input">Embed URL</label>
-                    <input type="text" id="reel-url-input" placeholder="https://player.vimeo.com/video/...">
+                    <label>Logo / Favicon (ซ้ายบน)</label>
+                    <p class="admin-hint" style="margin-bottom:8px;">ใส่ชื่อไฟล์ในโฟลเดอร์ <code>img/</code> — เช่น <code>ParkS-Size.png</code></p>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <div class="img-preview-box" id="prev-logo1" style="flex-shrink:0;"><span>ไม่มีรูป</span></div>
+                        <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+                            <div style="display:flex;gap:6px;align-items:center;">
+                                <input type="text" id="f-logo1-filename" placeholder="ParkS-Size.png" style="flex:1;background:var(--surface2);border:1px solid var(--border-hi);border-radius:var(--radius);color:var(--text);font-size:0.85rem;padding:8px 12px;outline:none;">
+                                <button class="abtn img-browse-btn" onclick="document.getElementById('file-logo1-pick').click()" title="Browse เพื่อเลือกชื่อไฟล์">&#128194;</button>
+                                <input type="file" id="file-logo1-pick" accept="image/*" style="display:none;" onchange="onImgFilenamePick('logo1',this)">
+                            </div>
+                            <div style="display:flex;gap:6px;">
+                                <button class="abtn img-browse-btn" onclick="applyImgFilename('logo1')" style="font-size:0.75rem;padding:5px 12px;">&#10003; ใช้ไฟล์นี้</button>
+                                <button class="abtn del" onclick="clearSiteImg('logo1')" style="font-size:0.75rem;padding:5px 10px;">&#x2715; ลบ</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="admin-field">
-                    <label for="reel-year-input">Showreel Year</label>
-                    <input type="text" id="reel-year-input" placeholder="2024">
+                    <label>Deco Image (ขวาบน)</label>
+                    <p class="admin-hint" style="margin-bottom:8px;">ใส่ชื่อไฟล์ในโฟลเดอร์ <code>img/</code> — เช่น <code>Emote.png</code></p>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <div class="img-preview-box" id="prev-deco" style="flex-shrink:0;"><span>ไม่มีรูป</span></div>
+                        <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
+                            <div style="display:flex;gap:6px;align-items:center;">
+                                <input type="text" id="f-deco-filename" placeholder="Emote.png" style="flex:1;background:var(--surface2);border:1px solid var(--border-hi);border-radius:var(--radius);color:var(--text);font-size:0.85rem;padding:8px 12px;outline:none;">
+                                <button class="abtn img-browse-btn" onclick="document.getElementById('file-deco-pick').click()" title="Browse เพื่อเลือกชื่อไฟล์">&#128194;</button>
+                                <input type="file" id="file-deco-pick" accept="image/*" style="display:none;" onchange="onImgFilenamePick('deco',this)">
+                            </div>
+                            <div style="display:flex;gap:6px;">
+                                <button class="abtn img-browse-btn" onclick="applyImgFilename('deco')" style="font-size:0.75rem;padding:5px 12px;">&#10003; ใช้ไฟล์นี้</button>
+                                <button class="abtn del" onclick="clearSiteImg('deco')" style="font-size:0.75rem;padding:5px 10px;">&#x2715; ลบ</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="admin-field">
-                    <label for="reel-caption-input">Caption</label>
-                    <input type="text" id="reel-caption-input" placeholder="Character animation · Body mechanics...">
-                </div>
-                <div class="admin-row-btn">
-                    <button class="admin-primary-btn" id="apply-reel-btn">อัปเดต</button>
-                    <span id="reel-msg" class="admin-success"></span>
+                <div class="admin-row-btn" style="margin-top:16px;">
+                    <button class="admin-primary-btn" onclick="applySite()">บันทึก</button>
+                    <span id="msg-site" class="admin-success"></span>
                 </div>
             </div>
 
-            <!-- Portfolio tab -->
+            <!-- REEL -->
+            <div id="tab-reel" class="admin-tab-content" style="display:none;">
+                <p class="admin-section-title">Reel Settings</p>
+                <div class="admin-field"><label>Tag ปี (เช่น Showreel 2024)</label><input type="text" id="f-reel-label" placeholder="Showreel 2024"></div>
+                <div class="admin-field"><label>Heading</label><input type="text" id="f-reel-title" placeholder="3D Animation Reel"></div>
+                <div class="admin-field"><label>Caption</label><input type="text" id="f-reel-caption" placeholder="Character animation · Body mechanics..."></div>
+                <p class="admin-section-title" style="margin-top:16px;">Embed Source</p>
+                <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+                    <button class="logo-mode-btn" data-reel="youtube" onclick="setReelSource('youtube')">YouTube</button>
+                    <button class="logo-mode-btn active" data-reel="vimeo" onclick="setReelSource('vimeo')">Vimeo</button>
+                </div>
+                <div id="reel-youtube-input" style="display:none;">
+                    <div class="admin-field"><label>YouTube URL หรือ ID</label><input type="text" id="f-reel-yt" placeholder="https://youtube.com/watch?v=..."></div>
+                </div>
+                <div id="reel-vimeo-input">
+                    <div class="admin-field"><label>Vimeo URL หรือ ID</label><input type="text" id="f-reel-vm" placeholder="https://vimeo.com/..."></div>
+                </div>
+                <div class="admin-row-btn" style="margin-top:16px;">
+                    <button class="admin-primary-btn" onclick="applyReel()">บันทึก</button>
+                    <span id="msg-reel" class="admin-success"></span>
+                </div>
+            </div>
+
+            <!-- ABOUT -->
+            <div id="tab-about" class="admin-tab-content" style="display:none;">
+                <p class="admin-section-title">ข้อมูลส่วนตัว</p>
+                <div class="admin-field"><label>ชื่อ (TH)</label><input type="text" id="f-about-nameth" placeholder="รัชพล ทัศประเสริฐ"></div>
+                <div class="admin-field"><label>อีเมล</label><input type="text" id="f-about-email" placeholder="you@example.com"></div>
+                <div class="admin-field"><label>Resume URL / Path</label><input type="text" id="f-about-resume" placeholder="resume.pdf"></div>
+                <div class="admin-field">
+                    <label>Bio <span style="font-weight:400;color:var(--text-mute)">(Enter = ย่อหน้าใหม่)</span></label>
+                    <textarea id="f-about-bio" rows="5" style="width:100%;background:var(--surface2);border:1px solid var(--border-hi);border-radius:var(--radius);color:var(--text);font-family:var(--ff-body);font-size:0.9rem;padding:10px 14px;outline:none;resize:vertical;line-height:1.6;" placeholder="เขียน bio ที่นี่..."></textarea>
+                </div>
+                <div class="admin-field"><label>Skills <span style="font-weight:400;color:var(--text-mute)">(คั่นด้วย ,)</span></label><input type="text" id="f-about-skills" placeholder="Maya, Blender, After Effects"></div>
+                <div class="admin-field">
+                    <label>Profile Photo</label>
+                    <div class="img-pick-row">
+                        <div class="img-preview-box" id="prev-profile" style="border-radius:50%;"><span>ไม่มีรูป</span></div>
+                        <div style="flex:1;">
+                            <button class="abtn img-browse-btn" onclick="document.getElementById('file-profile').click()">&#128247; Browse</button>
+                            <button class="abtn del" onclick="clearSiteImg('profile')" style="margin-left:4px;">&#x2715; ลบ</button>
+                            <input type="file" id="file-profile" accept="image/*" style="display:none;" onchange="onSiteImgPick('profile',this)">
+                            <p class="admin-hint" style="margin-top:6px;margin-bottom:0;">รูปจะฝังใน data.json ตอน Export</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="admin-section-title" style="margin-top:20px;">Social Links</p>
+                <p class="admin-hint">เพิ่มได้ไม่จำกัด — ใส่ชื่อและ URL</p>
+                <div id="admin-socials-list" class="social-admin-list"></div>
+                <button class="admin-secondary-btn" id="add-social-btn" style="margin-top:10px;">+ เพิ่ม Social</button>
+                <div class="admin-row-btn" style="margin-top:16px;">
+                    <button class="admin-primary-btn" onclick="applyAbout()">บันทึก</button>
+                    <span id="msg-about" class="admin-success"></span>
+                </div>
+            </div>
+
+            <!-- PORTFOLIO -->
             <div id="tab-port" class="admin-tab-content" style="display:none;">
-                <p class="admin-section-title">เพิ่มวิดีโอใหม่</p>
-                <p class="admin-hint">วาง YouTube URL หรือ Video ID (11 ตัวอักษร)</p>
-                <div class="admin-field">
-                    <label for="new-yt-input">YouTube URL หรือ ID</label>
-                    <input type="text" id="new-yt-input" placeholder="https://youtube.com/watch?v=XXXXXXXXXXX">
+                <p class="admin-section-title">เพิ่ม Item ใหม่</p>
+                <div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;">
+                    <button class="logo-mode-btn active" data-ptype="video" onclick="setPortType('video',this)">&#127916; วิดีโอ YouTube</button>
+                    <button class="logo-mode-btn" data-ptype="image" onclick="setPortType('image',this)">&#128247; รูปภาพ</button>
+                </div>
+                <div id="port-video-input">
+                    <p class="admin-hint">วาง YouTube URL หรือ Video ID (11 ตัวอักษร)</p>
+                    <div class="admin-field"><label>YouTube URL หรือ ID</label><input type="text" id="new-yt-input" placeholder="https://youtube.com/watch?v=..."></div>
+                </div>
+                <div id="port-image-input" style="display:none;">
+                    <p class="admin-hint">ชื่อไฟล์ที่อยู่ใน <code>img/portfolio/</code> — เช่น <code>work1.jpg</code></p>
+                    <div class="admin-field">
+                        <label>ชื่อไฟล์</label>
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <input type="text" id="new-img-filename" placeholder="work1.jpg" style="flex:1;background:var(--surface2);border:1px solid var(--border-hi);border-radius:var(--radius);color:var(--text);font-size:0.85rem;padding:8px 12px;outline:none;">
+                            <button class="abtn img-browse-btn" onclick="document.getElementById('new-img-file').click()" title="Browse เพื่อเลือกชื่อไฟล์">&#128194;</button>
+                            <input type="file" id="new-img-file" accept="image/*" style="display:none;" onchange="onPortImgPick(this)">
+                        </div>
+                    </div>
                 </div>
                 <div class="admin-field">
-                    <label for="new-title-input">ชื่อผลงาน (แสดงตอน hover)</label>
-                    <input type="text" id="new-title-input" placeholder="เช่น Body Mechanics — Walk Cycle">
+                    <label>ชื่อผลงาน <span style="font-weight:400;color:var(--text-mute)">(แสดงตอน hover)</span></label>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <input type="text" id="new-port-title" placeholder="เช่น Body Mechanics — Walk Cycle" style="flex:1;background:var(--surface2);border:1px solid var(--border-hi);border-radius:var(--radius);color:var(--text);font-size:0.85rem;padding:8px 12px;outline:none;">
+                        <button class="abtn" id="fetch-yt-title-btn" onclick="fetchNewYtTitle()" title="ดึงชื่อจาก YouTube" style="font-size:0.7rem;padding:0 8px;flex-shrink:0;">YT</button>
+                    </div>
                 </div>
                 <div class="admin-row-btn">
-                    <button class="admin-primary-btn" id="add-port-btn">+ เพิ่ม</button>
+                    <button class="admin-primary-btn" onclick="addPortItem()">+ เพิ่ม</button>
                     <span id="add-msg" class="admin-success"></span>
                 </div>
-                <p class="admin-section-title" style="margin-top:24px;">รายการวิดีโอทั้งหมด</p>
-                <p class="admin-hint">↑↓ เรียงลำดับ | ✕ ลบ</p>
+                <p class="admin-section-title" style="margin-top:24px;">รายการทั้งหมด (<span id="port-count-label">0</span>)</p>
+                <p class="admin-hint">↑↓ เรียงลำดับ &nbsp;|&nbsp; ✕ ลบ &nbsp;|&nbsp; YT ดึงชื่อจาก YouTube</p>
                 <div id="admin-port-list" class="admin-port-list"></div>
             </div>
 
-            <!-- Profile tab -->
-            <div id="tab-profile" class="admin-tab-content" style="display:none;">
-                <p class="admin-section-title">ข้อมูลส่วนตัว</p>
-                <div class="admin-field">
-                    <label for="p-name-en">ชื่อ (EN)</label>
-                    <input type="text" id="p-name-en" placeholder="Rachapon Thatprasert">
-                </div>
-                <div class="admin-field">
-                    <label for="p-name-th">ชื่อ (TH)</label>
-                    <input type="text" id="p-name-th" placeholder="รัชพล ทัศประเสริฐ">
-                </div>
-                <div class="admin-field">
-                    <label for="p-role">Role / Subtitle</label>
-                    <input type="text" id="p-role" placeholder="3D Animator / Character Animation">
-                </div>
-                <div class="admin-field">
-                    <label for="p-email">Email</label>
-                    <input type="text" id="p-email" placeholder="your@email.com">
-                </div>
-                <p class="admin-section-title" style="margin-top:20px;">Social Links</p>
-                <p class="admin-hint">เพิ่มช่องทางโซเชียลได้ไม่จำกัด — ใส่ชื่อและ URL</p>
-                <div id="social-admin-list" class="social-admin-list"></div>
-                <button class="admin-secondary-btn" id="add-social-btn" style="margin-top:10px;">+ เพิ่ม Social</button>
-                <div class="admin-field">
-                    <label for="p-bio">Bio (ขึ้นบรรทัดใหม่ด้วย \n)</label>
-                    <textarea id="p-bio" class="admin-textarea" rows="4" placeholder="เกี่ยวกับตัวเอง..."></textarea>
-                </div>
-                <div class="admin-field">
-                    <label for="p-skills">Skills (คั่นด้วยจุลภาค)</label>
-                    <input type="text" id="p-skills" placeholder="Maya, Blender, After Effects">
-                </div>
-                <div class="admin-row-btn">
-                    <button class="admin-primary-btn" id="apply-profile-btn">บันทึก Profile</button>
-                    <span id="profile-msg" class="admin-success"></span>
-                </div>
-            </div>
-
-            <!-- Theme tab -->
+            <!-- THEME -->
             <div id="tab-theme" class="admin-tab-content" style="display:none;">
                 <p class="admin-section-title">Accent Color</p>
-                <p class="admin-hint">เลือกสีหลักของเว็บ — บันทึกอัตโนมัติในเบราว์เซอร์</p>
-                <div class="theme-swatches" id="admin-theme-swatches" style="margin-bottom:20px;"></div>
+                <p class="admin-hint">เลือกสีหลัก</p>
+                <div class="theme-swatches" id="admin-theme-swatches" style="margin-bottom:20px;gap:12px;"></div>
                 <p class="admin-section-title">Background</p>
                 <p class="admin-hint">เลือกโทนพื้นหลัง</p>
-                <div class="theme-bg-btns" id="admin-bg-btns" style="gap:10px;margin-bottom:4px;">
-                    <button class="bg-btn bg-dark"  data-bg="dark"  title="Dark (default)" aria-label="Dark" style="width:32px;height:32px;"></button>
-                    <button class="bg-btn bg-deep"  data-bg="deep"  title="Deep Black"     aria-label="Deep" style="width:32px;height:32px;"></button>
-                    <button class="bg-btn bg-warm"  data-bg="warm"  title="Warm Dark"      aria-label="Warm" style="width:32px;height:32px;"></button>
-                    <button class="bg-btn bg-light" data-bg="light" title="Light"          aria-label="Light" style="width:32px;height:32px;"></button>
+                <div id="admin-bg-btns" style="display:flex;gap:10px;margin-bottom:20px;">
+                    <button class="bg-btn bg-dark"  data-bg="dark"  title="Dark"       aria-label="Dark"  style="width:32px;height:32px;"></button>
+                    <button class="bg-btn bg-deep"  data-bg="deep"  title="Deep Black" aria-label="Deep"  style="width:32px;height:32px;"></button>
+                    <button class="bg-btn bg-warm"  data-bg="warm"  title="Warm Dark"  aria-label="Warm"  style="width:32px;height:32px;"></button>
+                    <button class="bg-btn bg-light" data-bg="light" title="Light"      aria-label="Light" style="width:32px;height:32px;"></button>
                 </div>
-                <div style="margin-top:20px;padding:14px;background:rgba(200,242,80,0.05);border-radius:var(--radius);border:1px solid rgba(200,242,80,0.2);">
-                    <p class="admin-hint" style="margin:0;line-height:1.8;">
-                        ⚠️ เลือกสีแล้ว <strong style="color:var(--accent)">ต้อง Export JSON</strong> และ push GitHub ด้วย<br>
-                        ถ้าไม่ Export ผู้เยี่ยมชมจะยังเห็น theme เดิม
-                    </p>
+                <p class="admin-section-title">BG Image (ภาพพื้นหลัง)</p>
+                <div class="admin-field">
+                    <div class="img-pick-row">
+                        <div class="img-preview-box wide" id="prev-bgimg"><span>ไม่มีรูป</span></div>
+                        <div style="flex:1;">
+                            <button class="abtn img-browse-btn" onclick="document.getElementById('file-bgimg').click()">&#128247; Browse</button>
+                            <button class="abtn del" onclick="clearSiteImg('bgimg')" style="margin-left:4px;">&#x2715; ลบ</button>
+                            <input type="file" id="file-bgimg" accept="image/*" style="display:none;" onchange="onSiteImgPick('bgimg',this)">
+                            <p class="admin-hint" style="margin-top:6px;margin-bottom:0;">ฝังใน data.json ตอน Export</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-field">
+                    <label>ความทึบ: <span id="f-th-opacity-val">15%</span></label>
+                    <input type="range" id="f-th-opacity" min="0" max="100" value="15" style="width:100%;accent-color:var(--accent);" oninput="document.getElementById('f-th-opacity-val').textContent=this.value+'%';liveBgOpacity(this.value);">
+                </div>
+                <div style="margin-top:16px;padding:14px;background:rgba(200,242,80,0.05);border-radius:var(--radius);border:1px solid rgba(200,242,80,0.2);">
+                    <p class="admin-hint" style="margin:0;line-height:1.8;">&#9888;&#65039; เลือกสีแล้ว <strong style="color:var(--accent)">ต้อง Export JSON</strong> และ push GitHub ด้วย</p>
                 </div>
             </div>
 
-            <!-- Import/Export JSON tab -->
+            <!-- JSON I/O -->
             <div id="tab-io" class="admin-tab-content" style="display:none;">
                 <p class="admin-section-title">Export JSON</p>
-                <p class="admin-hint">ดาวน์โหลด <code>data.json</code> เพื่อเก็บข้อมูลทั้งหมด — นำไปแทนที่ไฟล์เดิมแล้ว push GitHub</p>
-                <button class="export-btn" id="export-json-btn">⬇ Export data.json</button>
+                <p class="admin-hint">ดาวน์โหลด <code>data.json</code> — นำไปแทนที่ไฟล์เดิมแล้ว push GitHub</p>
+                <button class="export-btn" onclick="exportJSON()">&#8595; Export data.json</button>
                 <span id="export-msg" class="admin-success" style="display:block;margin-top:10px;font-size:0.82rem;"></span>
-
                 <p class="admin-section-title" style="margin-top:28px;">Import JSON</p>
-                <p class="admin-hint">เลือกไฟล์ <code>data.json</code> เพื่อโหลดข้อมูลทั้งหมด (จะแทนที่ข้อมูลปัจจุบัน)</p>
+                <p class="admin-hint">เลือกไฟล์ <code>data.json</code> เพื่อโหลดข้อมูลทั้งหมด</p>
                 <label class="import-label" for="import-json-file">
-                    📂 เลือกไฟล์ data.json
+                    &#128194; เลือกไฟล์ data.json
                     <input type="file" id="import-json-file" accept=".json" style="display:none;">
                 </label>
                 <span id="import-msg" class="admin-success" style="display:block;margin-top:10px;font-size:0.82rem;"></span>
             </div>
 
-        </div><!-- end dashboard-view -->
-
-        <div class="admin-footer-row">
-            <span id="admin-status" class="admin-hint" style="font-size:0.75rem;"></span>
+            <div class="admin-footer-row">
+                <span id="admin-status" class="admin-hint" style="font-size:0.75rem;"></span>
+            </div>
         </div>
+    </div>
+</div>
 
-    </div><!-- end admin-box -->
-</div><!-- end admin-panel -->
-
+<script>
+function adminTab(el, tabId) {
+    document.querySelectorAll('.atab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.admin-tab-content').forEach(t => t.style.display = 'none');
+    el.classList.add('active');
+    var tab = document.getElementById(tabId);
+    if (tab) tab.style.display = 'block';
+}
+</script>
 <script src="script.js"></script>
 </body>
 </html>
