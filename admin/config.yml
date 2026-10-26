@@ -1,0 +1,95 @@
+# Sveltia CMS settings — what /admin shows and where it saves.
+backend:
+  name: github
+  repo: hypurrcon/RachaponPortfolio
+  branch: main
+
+media_folder: img/uploads
+public_folder: /img/uploads
+site_url: https://www.rachaponthat-portfolio.com
+
+collections:
+  - name: site
+    label: Portfolio
+    editor:
+      preview: false
+    files:
+      - name: content
+        label: เนื้อหาทั้งเว็บ
+        file: content/site.json
+        format: json
+        fields:
+          - name: site
+            label: หัวเว็บ
+            widget: object
+            collapsed: true
+            fields:
+              - { name: name, label: ชื่อ (อังกฤษ), widget: string }
+              - { name: role, label: ตำแหน่ง / ใต้ชื่อ, widget: string, required: false }
+              - { name: logo, label: โลโก้ (ซ้ายบน), widget: image, required: false }
+              - { name: deco, label: รูปตกแต่ง (ขวาบน), widget: image, required: false }
+              - name: accent
+                label: สีหลักของเว็บ
+                widget: select
+                default: cyan
+                options:
+                  - { label: Cyan, value: cyan }
+                  - { label: Lime, value: lime }
+                  - { label: Coral, value: coral }
+                  - { label: Gold, value: gold }
+                  - { label: Violet, value: violet }
+                  - { label: Pink, value: pink }
+              - { name: url, label: URL เว็บ, widget: string, required: false, hint: ใช้สำหรับพรีวิวเวลาแชร์ลิงก์ }
+
+          - name: reel
+            label: Showreel (แท็บ Reels)
+            widget: object
+            collapsed: true
+            fields:
+              - { name: video, label: ลิงก์วิดีโอ, widget: string, hint: วางลิงก์ Vimeo หรือ YouTube ได้เลย }
+              - { name: label, label: ป้ายเล็กด้านบน, widget: string, required: false, hint: เช่น Showreel 2026 }
+              - { name: title, label: หัวข้อ, widget: string, required: false }
+              - { name: caption, label: คำอธิบายใต้วิดีโอ, widget: string, required: false }
+
+          - name: portfolio
+            label: ผลงาน (แท็บ Portfolio)
+            label_singular: ผลงาน
+            widget: list
+            hint: ลากเพื่อเรียงลำดับ — ลำดับที่นี่คือลำดับบนเว็บ
+            summary: "{{fields.title}}"
+            types:
+              - name: video
+                label: วิดีโอ YouTube
+                widget: object
+                summary: "▶ {{fields.title}}"
+                fields:
+                  - { name: youtube, label: ลิงก์ YouTube, widget: string, hint: วางลิงก์ YouTube (รวมถึง Shorts) }
+                  - { name: title, label: ชื่อผลงาน, widget: string, required: false }
+              - name: image
+                label: รูปภาพ
+                widget: object
+                summary: "🖼 {{fields.title}}"
+                fields:
+                  - { name: image, label: รูป, widget: image }
+                  - { name: title, label: ชื่อผลงาน, widget: string, required: false }
+
+          - name: about
+            label: About
+            widget: object
+            collapsed: true
+            fields:
+              - { name: nameTH, label: ชื่อ (ไทย), widget: string, required: false }
+              - { name: photo, label: รูปโปรไฟล์, widget: image, required: false }
+              - { name: bio, label: Bio, widget: text, required: false, hint: เว้นบรรทัดเพื่อขึ้นย่อหน้าใหม่ }
+              - { name: skills, label: Skills, widget: list, required: false }
+              - { name: email, label: อีเมล, widget: string, required: false }
+              - name: socials
+                label: Social links
+                label_singular: link
+                widget: list
+                required: false
+                summary: "{{fields.label}}"
+                fields:
+                  - { name: label, label: ชื่อ, widget: string, hint: เช่น YouTube, TikTok, Instagram }
+                  - { name: url, label: ลิงก์, widget: string }
+              - { name: resume, label: Resume (PDF), widget: file, required: false }
