@@ -8,7 +8,7 @@
   },
   "theme": {
     "accent": "cyan",
-    "bgEnabled": false,
+    "bgEnabled": true,
     "bgImage": "/img/uploads/bg.jpg",
     "bgOpacity": 15
   },
