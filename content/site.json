@@ -10,7 +10,7 @@
     "accent": "cyan",
     "bgEnabled": true,
     "bgImage": "/img/uploads/bg.jpg",
-    "bgOpacity": 15
+    "bgOpacity": 100
   },
   "reel": {
     "video": "https://vimeo.com/1169127503",
