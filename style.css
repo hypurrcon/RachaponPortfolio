@@ -33,6 +33,12 @@ body {
     display: flex; flex-direction: column;
 }
 img, iframe { display: block; max-width: 100%; }
+
+/* Optional background image (turned on and faded in /admin → ธีม) */
+.bg-layer {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-size: cover; background-position: center;
+}
 ul { list-style: none; }
 [lang="th"] { font-family: var(--ff-th); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
@@ -114,7 +120,7 @@ html[data-tab="portfolio"] .tab[data-tab="portfolio"],
 html[data-tab="about"] .tab[data-tab="about"] {
     background: var(--accent); color: #000; font-weight: 700;
 }
-.page { display: none; }
+.page { display: none; scroll-margin-top: 84px; } /* keep heading clear of the sticky tab bar */
 html:not([data-tab]) #reels,
 html[data-tab="reels"] #reels,
 html[data-tab="portfolio"] #portfolio,
