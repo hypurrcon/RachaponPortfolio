@@ -7,7 +7,7 @@ import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync } fr
 const C = JSON.parse(readFileSync("content/site.json", "utf8"));
 const OUT = "dist";
 
-// Accent colour presets (picked in /admin → Site → Accent colour)
+// Accent colour presets (picked in /admin → ธีม → สีหลัก)
 const ACCENTS = {
     cyan:   ["#4af0d8", "#4a9fff"],
     lime:   ["#c8f250", "#7ef2e2"],
@@ -42,7 +42,14 @@ function reelEmbed(raw) {
 
 /* ---------- data ---------- */
 const site = C.site || {}, reel = C.reel || {}, about = C.about || {};
-const [accent, accent2] = ACCENTS[site.accent] || ACCENTS.cyan;
+const theme = C.theme || {};
+const accentName = theme.accent || site.accent || "cyan";
+const [accent, accent2] = ACCENTS[accentName] || ACCENTS.cyan;
+// Background image: on/off, picture, and opacity 0–100 (%)
+const bgOpacity = Math.min(100, Math.max(0, Number(theme.bgOpacity ?? 15) || 0)) / 100;
+const bgLayer = theme.bgEnabled && theme.bgImage && bgOpacity > 0
+    ? `<div class="bg-layer" aria-hidden="true" style="background-image:url('${esc(asset(theme.bgImage))}');opacity:${bgOpacity}"></div>\n`
+    : "";
 const name = site.name || "Portfolio";
 const pageTitle = site.role ? `${name} — ${site.role}` : name;
 const description = `${site.role || "Portfolio"} — ${reel.caption || ""}`.trim();
@@ -103,7 +110,7 @@ const html = `<!DOCTYPE html>
     </script>
 </head>
 <body>
-
+${bgLayer}
 <a href="#main" class="skip-link">Skip to content</a>
 
 <header class="site-header">
@@ -212,4 +219,4 @@ writeFileSync(`${OUT}/index.html`, html);
 for (const p of ["style.css", "script.js", "img", "admin", "resume.pdf", "uploads"]) {
     if (existsSync(p)) cpSync(p, `${OUT}/${p}`, { recursive: true });
 }
-console.log(`Built ${OUT}/index.html — ${works.length} works, accent: ${site.accent || "cyan"}`);
+console.log(`Built ${OUT}/index.html — ${works.length} works, accent: ${accentName}, background: ${bgLayer ? Math.round(bgOpacity * 100) + "%" : "off"}`);

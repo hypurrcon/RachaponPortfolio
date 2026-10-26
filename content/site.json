@@ -4,8 +4,13 @@
     "role": "3D Animator / Character Animation",
     "logo": "/img/logo.png",
     "deco": "/img/emote.png",
-    "accent": "cyan",
     "url": "https://www.rachaponthat-portfolio.com"
+  },
+  "theme": {
+    "accent": "cyan",
+    "bgEnabled": false,
+    "bgImage": "/img/uploads/bg.jpg",
+    "bgOpacity": 15
   },
   "reel": {
     "video": "https://vimeo.com/1169127503",

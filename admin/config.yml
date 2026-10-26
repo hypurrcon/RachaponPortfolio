@@ -28,6 +28,13 @@ collections:
               - { name: role, label: ตำแหน่ง / ใต้ชื่อ, widget: string, required: false }
               - { name: logo, label: โลโก้ (ซ้ายบน), widget: image, required: false }
               - { name: deco, label: รูปตกแต่ง (ขวาบน), widget: image, required: false }
+              - { name: url, label: URL เว็บ, widget: string, required: false, hint: ใช้สำหรับพรีวิวเวลาแชร์ลิงก์ }
+
+          - name: theme
+            label: ธีม
+            widget: object
+            collapsed: true
+            fields:
               - name: accent
                 label: สีหลักของเว็บ
                 widget: select
@@ -39,7 +46,17 @@ collections:
                   - { label: Gold, value: gold }
                   - { label: Violet, value: violet }
                   - { label: Pink, value: pink }
-              - { name: url, label: URL เว็บ, widget: string, required: false, hint: ใช้สำหรับพรีวิวเวลาแชร์ลิงก์ }
+              - { name: bgEnabled, label: ใช้รูปพื้นหลัง, widget: boolean, default: false }
+              - { name: bgImage, label: รูปพื้นหลัง, widget: image, required: false, hint: แนะนำรูปแนวนอนกว้างไม่เกิน 1920px }
+              - name: bgOpacity
+                label: ความชัดของรูปพื้นหลัง (%)
+                widget: number
+                value_type: int
+                min: 0
+                max: 100
+                step: 5
+                default: 15
+                hint: 0 = มองไม่เห็น, 100 = ชัดเต็มที่ — แนะนำ 10–25 เพื่อให้อ่านตัวหนังสือง่าย
 
           - name: reel
             label: Showreel (แท็บ Reels)
