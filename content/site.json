@@ -1,0 +1,135 @@
+{
+  "site": {
+    "name": "Rachapon Thatprasert",
+    "role": "3D Animator / Character Animation",
+    "url": "https://www.rachaponthat-portfolio.com",
+    "logo": "/img/logo.png",
+    "deco": "/img/emote.png",
+    "accent": "cyan"
+  },
+  "reel": {
+    "label": "Showreel 2024",
+    "title": "3D Animation Reel",
+    "caption": "Character animation · Body mechanics · Facial performance",
+    "video": "https://vimeo.com/1169127503"
+  },
+  "portfolio": [
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=devW0oJUFRk",
+      "title": "KPop Demon Hunters"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=dex4vsSgK8A",
+      "title": "football bluelock"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=5oIfkuYBtLg",
+      "title": "hand"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=p2Zyb89sXoY",
+      "title": "lifting heavy"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=xzfF2g12BP4",
+      "title": "Static - FLAVOR FOLEY (Fan 3D Animation)"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=50XBFJeMdfA",
+      "title": "เมื่อ Lava Chicken อยู่ประเทศไทย"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=9KTGKXc4XYc",
+      "title": "Iron Landing"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=-HGcIdC-sAg",
+      "title": "ว่าด้วยการหาค้อน"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=R0XCXMMP5G8",
+      "title": "Midterm Final"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=4tB731jNpTw",
+      "title": "Project CRA Charity Run#5"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=V8pVpn3ftBQ",
+      "title": "bouncy ball"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=w_EWc5K7SHs",
+      "title": "ZENT - Overital"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=KYIcZnQCRDM",
+      "title": "Boxing"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=2F-CXlheMWo",
+      "title": "Walk cycle 003"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=HmKEqZBP7N8",
+      "title": "Jumpha: character select animation"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=K_jDPXL4zdk",
+      "title": "ZENT Overital"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=dEO1n5XmTnA",
+      "title": "เอาข้อคิดมาฝาก"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=ixTTWdGs1UY",
+      "title": "AE1"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/watch?v=jRConNGJ1Zc",
+      "title": "AE2"
+    }
+  ],
+  "about": {
+    "nameTH": "รัชพล ทัศประเสริฐ",
+    "photo": "/img/profile.jpg",
+    "bio": "ผมหลงใหลในโลกของ 3D Animation มาตั้งแต่เด็ก ยังรู้สึกสนุกทุกครั้งที่ได้ขยับตัวละครให้มีชีวิตและเป็นธรรมชาติคือความท้าทายที่ผมสนุกกับมันเสมอ ผมสนุกกับการเรียนรู้เทคนิคใหม่ๆ และพร้อมเปิดรับประสบการณ์ในสภาพแวดล้อมการทำงานจริง เพื่อพัฒนาฝีมือให้มีความมืออาชีพมากขึ้น\n\nนอกจากโปรเจกต์ในมหาวิทยาลัย ผมยังสร้างคอนเทนต์แอนิเมชันผ่านช่อง Hypurr ทั้งบน TikTok และ YouTube",
+    "skills": [
+      "Maya",
+      "Blender",
+      "After Effects"
+    ],
+    "email": "hypurr.con@gmail.com",
+    "socials": [
+      {
+        "label": "YouTube",
+        "url": "https://www.youtube.com/@Hypurr00"
+      },
+      {
+        "label": "TikTok",
+        "url": "https://www.tiktok.com/@hypurr_r"
+      }
+    ],
+    "resume": "/resume.pdf"
+  }
+}
