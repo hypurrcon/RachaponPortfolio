@@ -2,16 +2,16 @@
   "site": {
     "name": "Rachapon Thatprasert",
     "role": "3D Animator / Character Animation",
-    "url": "https://www.rachaponthat-portfolio.com",
     "logo": "/img/logo.png",
     "deco": "/img/emote.png",
-    "accent": "cyan"
+    "accent": "cyan",
+    "url": "https://www.rachaponthat-portfolio.com"
   },
   "reel": {
+    "video": "https://vimeo.com/1169127503",
     "label": "Showreel 2024",
     "title": "3D Animation Reel",
-    "caption": "Character animation · Body mechanics · Facial performance",
-    "video": "https://vimeo.com/1169127503"
+    "caption": "Character animation · Body mechanics · Facial performance"
   },
   "portfolio": [
     {
@@ -108,6 +108,11 @@
       "type": "video",
       "youtube": "https://www.youtube.com/watch?v=jRConNGJ1Zc",
       "title": "AE2"
+    },
+    {
+      "type": "video",
+      "youtube": "https://www.youtube.com/shorts/yVh6CQyAGF4",
+      "title": "REPO in Love"
     }
   ],
   "about": {
